@@ -1,10 +1,12 @@
 # ndarray-gdal
 
-Plugin for gdal-async that adds support for [`scijs/ndarray`](https://github.com/scijs/ndarray)
+Plugin for `gdal-async` that adds support for [`scijs/ndarray`](https://github.com/scijs/ndarray)
 
 # Installation
 
+```bash
 npm install --save gdal-async ndarray ndarray-gdal
+```
 
 # Usage
 
