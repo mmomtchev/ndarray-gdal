@@ -1,5 +1,10 @@
 # ndarray-gdal
 
+[![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
+[![npm version](https://img.shields.io/npm/v/ndarray-gdal)](https://www.npmjs.com/package/ndarray-gdal)
+![Node.js CI](https://github.com/mmomtchev/ndarray-gdal/workflows/Node.js%20CI/badge.svg)
+[![codecov](https://codecov.io/gh/mmomtchev/ndarray-gdal/branch/master/graph/badge.svg?token=UhQePZnXkt)](https://codecov.io/gh/mmomtchev/ndarray-gdal)
+
 Plugin for `gdal-async` that adds support for [`scijs/ndarray`](https://github.com/scijs/ndarray)
 
 # Installation
