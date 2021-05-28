@@ -81,10 +81,10 @@ describe('ndarray-gdal', () => {
       assert.throws(() => band.pixels.readArray({ data: {} }));
     });
     it('should throw when ndarray doesn\'t have 2 dimensions', () => {
-      assert.throws(() => band.pixels.readArray(ndarray(new Uint8Array(1), [ 1 ])));
+      assert.throws(() => band.pixels.readArray({ data: ndarray(new Uint8Array(1), [ 1 ]) }));
     });
     it('should throw when the datatype is not supported', () => {
-      assert.throws(() => band.pixels.readArray(ndarray(new Int8Array(1), [ 1 ])));
+      assert.throws(() => band.pixels.readArray({ data: ndarray(new Int8Array(4), [ 2, 2 ]) }));
     });
   });
 
@@ -143,10 +143,10 @@ describe('ndarray-gdal', () => {
       assert.throws(() => src.bands.get(1).pixels.writeArray({ data: {} }));
     });
     it('should throw when ndarray doesn\'t have 2 dimensions', () => {
-      assert.throws(() => src.bands.get(1).pixels.writeArray(ndarray(new Uint8Array(1), [ 1 ])));
+      assert.throws(() => src.bands.get(1).pixels.writeArray({ data: ndarray(new Uint8Array(1), [ 1 ]) }));
     });
     it('should throw when the datatype is not supported', () => {
-      assert.throws(() => src.bands.get(1).pixels.writeArray(ndarray(new Int8Array(1), [ 1 ])));
+      assert.throws(() => src.bands.get(1).pixels.writeArray({ data: ndarray(new Int8Array(4), [ 2, 2 ]) }));
     });
 
   });
