@@ -27,7 +27,8 @@ const band = ds.bands.get(1);
 const nd1 = band.pixels.readArray({ width: ds.rasterSize.x, height: ds.rasterSize.y });
 
 // Reading into existing ndarray (size can be deduced from the array)
-const nd2 = ndarray(new Uint8Array(ds.rasterSize.x * ds.rasterSize.y), [ ds.rasterSize.y, ds.rasterSize.x ]);
+const nd2 = ndarray(new Uint8Array(ds.rasterSize.x * ds.rasterSize.y),
+                    [ ds.rasterSize.y, ds.rasterSize.x ]);
 band.pixels.readArray({ data: nd2 });
 
 // Writing from an ndarray (size can be deduced from the array)
