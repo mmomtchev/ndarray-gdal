@@ -24,7 +24,7 @@ fromGDALDataType[gdal.GDT_Float64] = 'float64';
 
 function setup(gdal) {
   /**
-   * Read the selection region into the given ndarray or a new ndarray
+   * Read the selected region into the given ndarray or a new ndarray
    *
    * @method readArray
    * @param {object} options
@@ -77,7 +77,7 @@ function setup(gdal) {
   }
 
   /**
-   * Write the selection region from the given ndarray
+   * Write the selected region from the given ndarray
    *
    * @method readArray
    * @param {object} options

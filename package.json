@@ -4,7 +4,10 @@
   "description": "Plugin for ndarray support in gdal-async",
   "main": "index.js",
   "scripts": {
-    "test": "mocha"
+    "test": "mocha",
+    "c8": "node_modules/.bin/c8 node test",
+    "lcov": "node_modules/.bin/c8 report --reporter=text-lcov > coverage/tests.lcov",
+    "codecov": "curl -s https://codecov.io/bash | bash"
   },
   "repository": {
     "type": "git",
