@@ -47,10 +47,7 @@ describe('ndarray-gdal', () => {
       assert.deepEqual(original, nd.data);
     });
 
-    it('should support column-major stride', function () {
-      // now you understand the benefits of a column-major stride
-      // that does not require manual rotation
-      this.timeout(10000);
+    it('should support column-major stride', () => {
       const nd = ndarray(new Uint8Array(ds.rasterSize.x * ds.rasterSize.y), [ ds.rasterSize.y, ds.rasterSize.x ], [ 1, ds.rasterSize.y ]);
       band.pixels.readArray({ data: nd, width: ds.rasterSize.x, height: ds.rasterSize.y });
       assert.equal(nd.shape[0], ds.rasterSize.y);
