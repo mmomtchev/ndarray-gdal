@@ -86,6 +86,9 @@ describe('ndarray-gdal', () => {
     it('should throw when the datatype is not supported', () => {
       assert.throws(() => band.pixels.readArray({ data: ndarray(new Int8Array(4), [ 2, 2 ]) }));
     });
+    it('should throw with no arguments', () => {
+      assert.throws(() => band.pixels.readArray({ }));
+    });
   });
 
   describe('writeArray', () => {
