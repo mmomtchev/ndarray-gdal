@@ -1,6 +1,7 @@
 const gdal = require('gdal-async');
 const ndarray = require('ndarray');
 require('../ndarray-gdal')(gdal);
+const ops = require('ndarray-ops');
 const { assert } = require('chai');
 
 describe('ndarray-gdal', () => {
@@ -46,20 +47,17 @@ describe('ndarray-gdal', () => {
       assert.deepEqual(original, nd.data);
     });
 
-    it('should support column-major stride', () => {
+    it('should support column-major stride', function () {
+      // now you understand the benefits of a column-major stride
+      // that does not require manual rotation
+      this.timeout(10000);
       const nd = ndarray(new Uint8Array(ds.rasterSize.x * ds.rasterSize.y), [ ds.rasterSize.y, ds.rasterSize.x ], [ 1, ds.rasterSize.y ]);
       band.pixels.readArray({ data: nd, width: ds.rasterSize.x, height: ds.rasterSize.y });
       assert.equal(nd.shape[0], ds.rasterSize.y);
       assert.equal(nd.shape[1], ds.rasterSize.x);
       assert.equal(nd.stride[0], 1);
       assert.equal(nd.stride[1], ds.rasterSize.y);
-      const rowMajor = ndarray(new Uint8Array(ds.rasterSize.x * ds.rasterSize.y), [ ds.rasterSize.y, ds.rasterSize.x ]);
-      for (let x = 0; x < ds.rasterSize.x; x++) {
-        for (let y = 0; y < ds.rasterSize.y; y++) {
-          rowMajor.set(y, x, nd.get(y, x));
-        }
-      }
-      assert.deepEqual(original, rowMajor.data);
+      assert.isTrue(ops.equals(nd, ndarray(original, [ ds.rasterSize.y, ds.rasterSize.x ])));
     });
 
   });
