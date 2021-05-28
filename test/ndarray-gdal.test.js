@@ -57,6 +57,26 @@ describe('ndarray-gdal', () => {
       assert.isTrue(ops.equals(nd, ndarray(original, [ ds.rasterSize.y, ds.rasterSize.x ])));
     });
 
+    it('should support row-negative stride', () => {
+      const nd = ndarray(new Uint8Array(ds.rasterSize.x * ds.rasterSize.y), [ ds.rasterSize.y, ds.rasterSize.x ], [ -ds.rasterSize.x, 1 ]);
+      band.pixels.readArray({ data: nd, width: ds.rasterSize.x, height: ds.rasterSize.y });
+      assert.equal(nd.shape[0], ds.rasterSize.y);
+      assert.equal(nd.shape[1], ds.rasterSize.x);
+      assert.equal(nd.stride[0], -ds.rasterSize.x);
+      assert.equal(nd.stride[1], 1);
+      assert.isTrue(ops.equals(nd, ndarray(original, [ ds.rasterSize.y, ds.rasterSize.x ])));
+    });
+
+    it('should support column-negative stride', () => {
+      const nd = ndarray(new Uint8Array(ds.rasterSize.x * ds.rasterSize.y), [ ds.rasterSize.y, ds.rasterSize.x ], [ 1, -ds.rasterSize.y ]);
+      band.pixels.readArray({ data: nd, width: ds.rasterSize.x, height: ds.rasterSize.y });
+      assert.equal(nd.shape[0], ds.rasterSize.y);
+      assert.equal(nd.shape[1], ds.rasterSize.x);
+      assert.equal(nd.stride[0], 1);
+      assert.equal(nd.stride[1], -ds.rasterSize.y);
+      assert.isTrue(ops.equals(nd, ndarray(original, [ ds.rasterSize.y, ds.rasterSize.x ])));
+    });
+
   });
 
   describe('writeArray', () => {

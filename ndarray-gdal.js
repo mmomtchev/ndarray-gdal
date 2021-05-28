@@ -56,10 +56,6 @@ function setup(gdal) {
       throw new RangeError('data must have exactly 2 dimensions');
     }
 
-    if (data.stride[0] < 0 || data.stride[1] < 0 || data.offset > 0) {
-      throw new TypeError('this form of the ndarray is not supported yet');
-    }
-
     if (!height) height = data.shape[0];
     if (!width) width = data.shape[1];
 
@@ -69,9 +65,12 @@ function setup(gdal) {
     }
 
     this.read(x, y, width, height, data.data, {
+      buffer_height: data.shape[0],
+      buffer_width: data.shape[1],
       data_type: gdalType,
       pixel_space: data.stride[1] * data.data.BYTES_PER_ELEMENT,
-      line_space: data.stride[0] * data.data.BYTES_PER_ELEMENT
+      line_space: data.stride[0] * data.data.BYTES_PER_ELEMENT,
+      offset: data.offset
     });
 
     return data;
@@ -98,10 +97,6 @@ function setup(gdal) {
       throw new RangeError('data must have exactly 2 dimensions');
     }
 
-    if (data.stride[0] < 0 || data.stride[1] < 0 || data.offset > 0) {
-      throw new TypeError('this form of the ndarray is not supported yet');
-    }
-
     if (!y) y = 0;
     if (!x) x = 0;
     if (!height) height = data.shape[0];
@@ -117,7 +112,8 @@ function setup(gdal) {
       buffer_width: data.shape[1],
       data_type: gdalType,
       pixel_space: data.stride[1] * data.data.BYTES_PER_ELEMENT,
-      line_space: data.stride[0] * data.data.BYTES_PER_ELEMENT
+      line_space: data.stride[0] * data.data.BYTES_PER_ELEMENT,
+      offset: data.offset
     });
 
     return data;
