@@ -5,8 +5,8 @@
   "main": "index.js",
   "scripts": {
     "test": "mocha",
-    "c8": "node_modules/.bin/c8 node test",
-    "lcov": "node_modules/.bin/c8 report --reporter=text-lcov > coverage/tests.lcov",
+    "c8": "npx c8 node node_modules/.bin/mocha",
+    "lcov": "npx c8 report --reporter=text-lcov > coverage/tests.lcov",
     "codecov": "curl -s https://codecov.io/bash | bash"
   },
   "repository": {
