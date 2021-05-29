@@ -2,7 +2,8 @@
   "name": "ndarray-gdal",
   "version": "1.0.0",
   "description": "Plugin for ndarray support in gdal-async",
-  "main": "index.js",
+  "main": "ndarray-gdal.js",
+  "types": "index.d.ts",
   "scripts": {
     "test": "mocha",
     "c8": "npx c8 node node_modules/.bin/mocha",
@@ -26,12 +27,13 @@
     "url": "https://github.com/mmomtchev/ndarray-gdal/issues"
   },
   "homepage": "https://github.com/mmomtchev/ndarray-gdal#readme",
-  "dependencies": {},
   "peerDependencies": {
+    "@types/ndarray": "^1.0.9",
     "gdal-async": ">=3.2.99",
     "ndarray": "^1.0.19"
   },
   "devDependencies": {
+    "@types/ndarray": "^1.0.9",
     "chai": "^4.3.4",
     "eslint": "^7.27.0",
     "eslint-plugin-array-func": "^3.1.7",

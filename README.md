@@ -5,7 +5,9 @@
 ![Node.js CI](https://github.com/mmomtchev/ndarray-gdal/workflows/Node.js%20CI/badge.svg)
 [![codecov](https://codecov.io/gh/mmomtchev/ndarray-gdal/branch/master/graph/badge.svg?token=UhQePZnXkt)](https://codecov.io/gh/mmomtchev/ndarray-gdal)
 
-Plugin for `gdal-async` that adds support for [`scijs/ndarray`](https://github.com/scijs/ndarray)
+Plugin for `gdal-async` allowing zero-copy I/O from and to [`scijs/ndarray`](https://github.com/scijs/ndarray).
+
+This module requires at least `gdal-async@3.2.99`.
 
 # Installation
 
@@ -18,7 +20,7 @@ npm install --save gdal-async ndarray ndarray-gdal
 ```js
 const gdal = require('gdal-async');
 const ndarray = require('ndarray');
-require('ndarray-gdal')(gdal);
+require('ndarray-gdal');
 
 const ds = gdal.open('sample.tif');
 const band = ds.bands.get(1);
@@ -26,16 +28,36 @@ const band = ds.bands.get(1);
 // Creating a new ndarray
 const nd1 = band.pixels.readArray({ width: ds.rasterSize.x, height: ds.rasterSize.y });
 
-// Reading into existing ndarray (size can be deduced from the array)
+// Reading into existing ndarray with a non-default stride
 const nd2 = ndarray(new Uint8Array(ds.rasterSize.x * ds.rasterSize.y),
-                    [ ds.rasterSize.y, ds.rasterSize.x ]);
+                    [ ds.rasterSize.y, ds.rasterSize.x ], [ ds.rasterSize.x, -1 ]);
+// size will be deduced from the array
 band.pixels.readArray({ data: nd2 });
 
 // Writing from an ndarray (size can be deduced from the array)
 band.pixels.writeArray({ data: nd2 });
 ```
 
-Both row-major and column-major strides are supported, but row-major will be significantly faster. Still, it is much faster to use a column-major stride than to manually transpose the resulting array in JS.
+I/O from and to all strides is supported without copying/rotation, but positive/positive row-major stride will be the fastest as it is usually the one that matches the file format. Interleaving is provided by the GDAL C++ implementation which uses SIMD instructions on CPUs that support it.
+## TypeScript
+
+TypeScript is supported via a module augmentation definition file.
+
+```sh
+npm install --save @types/ndarray
+```
+
+
+```ts
+import * as gdal from 'gdal-async';
+import ndarray from 'ndarray';
+import 'ndarray-gdal';
+
+const ds: gdal.Dataset = gdal.open('sample.tif');
+const nd: ndarray.NdArray<2> = ds.bands.get(1).pixels.readArray({
+                width: ds.rasterSize.x, 
+                height: ds.rasterSize.y });
+```
 
 
 # Copyright

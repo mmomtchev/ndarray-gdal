@@ -1,6 +1,6 @@
 const gdal = require('gdal-async');
 const ndarray = require('ndarray');
-require('../ndarray-gdal')(gdal);
+require('../ndarray-gdal');
 const ops = require('ndarray-ops');
 const { assert } = require('chai');
 
