@@ -29,7 +29,9 @@ describe('ndarray-gdal', () => {
     });
 
     it('should create a new array when needed', () => {
+
       const nd = band.pixels.readArray({ width: ds.rasterSize.x, height: ds.rasterSize.y });
+
       assert.equal(nd.shape[0], ds.rasterSize.y);
       assert.equal(nd.shape[1], ds.rasterSize.x);
       assert.equal(nd.stride[0], ds.rasterSize.x);
@@ -39,7 +41,9 @@ describe('ndarray-gdal', () => {
 
     it('should write to a preallocated array', () => {
       const nd = ndarray(new Uint8Array(ds.rasterSize.x * ds.rasterSize.y), [ ds.rasterSize.y, ds.rasterSize.x ]);
+
       band.pixels.readArray({ data: nd });
+
       assert.equal(nd.shape[0], ds.rasterSize.y);
       assert.equal(nd.shape[1], ds.rasterSize.x);
       assert.equal(nd.stride[0], ds.rasterSize.x);
@@ -49,6 +53,7 @@ describe('ndarray-gdal', () => {
 
     it('should guess the size with no arguments', () => {
       const nd = band.pixels.readArray();
+
       assert.equal(nd.shape[0], ds.rasterSize.y);
       assert.equal(nd.shape[1], ds.rasterSize.x);
       assert.equal(nd.stride[0], ds.rasterSize.x);
@@ -58,7 +63,9 @@ describe('ndarray-gdal', () => {
 
     it('should support column-major stride', () => {
       const nd = ndarray(new Uint8Array(ds.rasterSize.x * ds.rasterSize.y), [ ds.rasterSize.y, ds.rasterSize.x ], [ 1, ds.rasterSize.y ]);
+
       band.pixels.readArray({ data: nd, width: ds.rasterSize.x, height: ds.rasterSize.y });
+
       assert.equal(nd.shape[0], ds.rasterSize.y);
       assert.equal(nd.shape[1], ds.rasterSize.x);
       assert.equal(nd.stride[0], 1);
@@ -68,7 +75,9 @@ describe('ndarray-gdal', () => {
 
     it('should support row-negative stride', () => {
       const nd = ndarray(new Uint8Array(ds.rasterSize.x * ds.rasterSize.y), [ ds.rasterSize.y, ds.rasterSize.x ], [ -ds.rasterSize.x, 1 ]);
+
       band.pixels.readArray({ data: nd, width: ds.rasterSize.x, height: ds.rasterSize.y });
+
       assert.equal(nd.shape[0], ds.rasterSize.y);
       assert.equal(nd.shape[1], ds.rasterSize.x);
       assert.equal(nd.stride[0], -ds.rasterSize.x);
@@ -78,7 +87,9 @@ describe('ndarray-gdal', () => {
 
     it('should support column-negative stride', () => {
       const nd = ndarray(new Uint8Array(ds.rasterSize.x * ds.rasterSize.y), [ ds.rasterSize.y, ds.rasterSize.x ], [ 1, -ds.rasterSize.y ]);
+
       band.pixels.readArray({ data: nd, width: ds.rasterSize.x, height: ds.rasterSize.y });
+
       assert.equal(nd.shape[0], ds.rasterSize.y);
       assert.equal(nd.shape[1], ds.rasterSize.x);
       assert.equal(nd.stride[0], 1);
@@ -90,7 +101,9 @@ describe('ndarray-gdal', () => {
       // The top left quadrant of sample.tif is all zeros
       const w = 16, h = 12;
       const nd = ndarray(new Uint8Array(w*h), [ h, w ]);
+
       band.pixels.readArray({ data: nd, x: 0, y: 0, width: w, height: h });
+
       assert.equal(nd.shape[0], h);
       assert.equal(nd.shape[1], w);
       assert.equal(nd.stride[0], w);
@@ -104,7 +117,9 @@ describe('ndarray-gdal', () => {
       // But the rest is not
       const w = 16, h = 12;
       const nd = ndarray(new Uint8Array(w*h), [ h, w ]);
+
       band.pixels.readArray({ data: nd });
+
       assert.equal(nd.shape[0], 12);
       assert.equal(nd.shape[1], 16);
       assert.equal(nd.stride[0], 16);
@@ -144,7 +159,9 @@ describe('ndarray-gdal', () => {
 
     it('should write data from an ndarray', () => {
       const original = src.bands.get(1).pixels.readArray({ width: src.rasterSize.x, height: src.rasterSize.y });
+
       dst.bands.get(1).pixels.writeArray({ width: src.rasterSize.x, height: src.rasterSize.y, data: original });
+
       const res = dst.bands.get(1).pixels.readArray({ width: src.rasterSize.x, height: src.rasterSize.y });
       assert.deepEqual(original.data, res.data);
     });
@@ -153,7 +170,9 @@ describe('ndarray-gdal', () => {
       const original = ndarray(new Uint8Array(src.rasterSize.x * src.rasterSize.y),
         [ dst.rasterSize.y, dst.rasterSize.x ], [ 1, dst.rasterSize.y ]);
       src.bands.get(1).pixels.readArray({ width: src.rasterSize.x, height: src.rasterSize.y, data: original });
+
       dst.bands.get(1).pixels.writeArray({ width: src.rasterSize.x, height: src.rasterSize.y, data: original });
+
       const res = dst.bands.get(1).pixels.readArray({ width: src.rasterSize.x, height: src.rasterSize.y });
       assert.isTrue(ops.equals(res, original));
     });
@@ -162,7 +181,9 @@ describe('ndarray-gdal', () => {
       const original = ndarray(new Uint8Array(src.rasterSize.x * src.rasterSize.y),
         [ dst.rasterSize.y, dst.rasterSize.x ], [ -dst.rasterSize.x, 1 ]);
       src.bands.get(1).pixels.readArray({ width: src.rasterSize.x, height: src.rasterSize.y, data: original });
+
       dst.bands.get(1).pixels.writeArray({ width: src.rasterSize.x, height: src.rasterSize.y, data: original });
+
       const res = dst.bands.get(1).pixels.readArray({ width: src.rasterSize.x, height: src.rasterSize.y });
       assert.isTrue(ops.equals(res, original));
     });
@@ -171,7 +192,9 @@ describe('ndarray-gdal', () => {
       const original = ndarray(new Uint8Array(src.rasterSize.x * src.rasterSize.y),
         [ dst.rasterSize.y, dst.rasterSize.x ], [ 1, -dst.rasterSize.y ]);
       src.bands.get(1).pixels.readArray({ width: src.rasterSize.x, height: src.rasterSize.y, data: original });
+
       dst.bands.get(1).pixels.writeArray({ width: src.rasterSize.x, height: src.rasterSize.y, data: original });
+
       const res = dst.bands.get(1).pixels.readArray({ width: src.rasterSize.x, height: src.rasterSize.y });
       assert.isTrue(ops.equals(res, original));
     });
