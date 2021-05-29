@@ -39,7 +39,7 @@
     "eslint-plugin-array-func": "^3.1.7",
     "eslint-plugin-mocha": "^9.0.0",
     "eslint-plugin-prefer-arrow": "^1.2.3",
-    "gdal-async": "git+https://github.com/mmomtchev/node-gdal-async.git",
+    "gdal-async": "^3.2.99",
     "mocha": "^8.4.0",
     "ndarray": "^1.0.19",
     "ndarray-ops": "^1.2.2"
