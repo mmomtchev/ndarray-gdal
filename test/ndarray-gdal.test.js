@@ -88,13 +88,13 @@ describe('ndarray-gdal', () => {
 
     it('should throw when data is not an ndarray', () => {
       assert.throws(() => band.pixels.readArray({ data: {} }));
-    });
+    }, /data must be/);
     it('should throw when ndarray doesn\'t have 2 dimensions', () => {
       assert.throws(() => band.pixels.readArray({ data: ndarray(new Uint8Array(1), [ 1 ]) }));
-    });
+    }, /2 dimensions/);
     it('should throw when the datatype is not supported', () => {
       assert.throws(() => band.pixels.readArray({ data: ndarray(new Int8Array(4), [ 2, 2 ]) }));
-    });
+    }, /Type.*not supported/);
   });
 
   describe('writeArray', () => {
@@ -150,13 +150,16 @@ describe('ndarray-gdal', () => {
 
     it('should throw when data is not an ndarray', () => {
       assert.throws(() => src.bands.get(1).pixels.writeArray({ data: {} }));
-    });
+    }, /data must be/);
     it('should throw when ndarray doesn\'t have 2 dimensions', () => {
       assert.throws(() => src.bands.get(1).pixels.writeArray({ data: ndarray(new Uint8Array(1), [ 1 ]) }));
-    });
+    }, /2 dimensions/);
     it('should throw when the datatype is not supported', () => {
       assert.throws(() => src.bands.get(1).pixels.writeArray({ data: ndarray(new Int8Array(4), [ 2, 2 ]) }));
-    });
+    }, /Type.*not supported/);
+    it('should throw if a resampling method is specified', () => {
+      assert.throws(() => src.bands.get(1).pixels.writeArray({ data: ndarray(new Uint8Array(4), [ 2, 2 ]), resampling: gdal.GRA_Bilinear }));
+    }, /resampling.*not supported/);
 
   });
 });

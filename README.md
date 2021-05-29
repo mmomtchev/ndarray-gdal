@@ -31,7 +31,7 @@ const nd1 = band.pixels.readArray({ width: ds.rasterSize.x, height: ds.rasterSiz
 // Reading into existing ndarray with a non-default stride
 const nd2 = ndarray(new Uint8Array(ds.rasterSize.x * ds.rasterSize.y),
                     [ ds.rasterSize.y, ds.rasterSize.x ], [ ds.rasterSize.x, -1 ]);
-// size will be deduced from the array
+// read the whole raster band fitting it in the array, resampling if needed
 band.pixels.readArray({ data: nd2 });
 
 // Writing from an ndarray (size can be deduced from the array)
@@ -39,6 +39,7 @@ band.pixels.writeArray({ data: nd2 });
 ```
 
 I/O from and to all strides is supported without copying/rotation, but positive/positive row-major stride will be the fastest as it is usually the one that matches the file format. Interleaving is provided by the GDAL C++ implementation which uses SIMD instructions on CPUs that support it.
+
 ## TypeScript
 
 TypeScript is supported via a module augmentation definition file.
@@ -46,7 +47,6 @@ TypeScript is supported via a module augmentation definition file.
 ```sh
 npm install --save @types/ndarray
 ```
-
 
 ```ts
 import * as gdal from 'gdal-async';
@@ -58,7 +58,6 @@ const nd: ndarray.NdArray<2> = ds.bands.get(1).pixels.readArray({
                 width: ds.rasterSize.x, 
                 height: ds.rasterSize.y });
 ```
-
 
 # Copyright
 

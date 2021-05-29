@@ -29,12 +29,20 @@ fromGDALDataType[gdal.GDT_Float32] = Float32Array;
 fromGDALDataType[gdal.GDT_Float64] = Float64Array;
 
 /**
- * @typedef ArrayOptions { data?: ndarray.NdArray, y?: number,  width?: number, height?: number }
+ * @typedef ArrayOptions { data?: ndarray.NdArray, y?: number,  width?: number, height?: number, resampling?: string, progress_cb?: ProgressCb  }
  */
 
 
 /**
- * Read the selected region into the given ndarray or a new ndarray
+ * Read the selection region into the given ndarray or a new ndarray.
+ *
+ * x, y specify the origin of the selection region and width and height specify its size.
+ * [x, y] default to [0, 0], [width, height] default to the full size of the raster data.
+ * If an existing array if passed in data, it would be used keeping its current stride.
+ * If the array has a different size than the selection region, the data will be resampled.
+ * The resampling algorithm can be specified in resampling, otherwise GDAL's default one will be used.
+ * If no array is specified, a new array of [width, height] size with a default
+ * positive/positive row-major stride will be allocated.
  *
  * @method readArray
  * @param {ArrayOptions} [options]
@@ -43,10 +51,12 @@ fromGDALDataType[gdal.GDT_Float64] = Float64Array;
  * @param {number} [options.y]
  * @param {number} [options.width]
  * @param {number} [options.height]
+ * @param {string} [options.resampling]
+ * @param {ProgressCb} [options.progress_cb]
  * @returns {ndarray.NdArray}
  */
 function readArray(opts) {
-  let { data, x, y, width, height } = opts || {};
+  let { data, x, y, width, height, resampling, progress_cb } = opts || {};
   if (!y) y = 0;
   if (!x) x = 0;
   if (!height) height = this.band.size.y;
@@ -78,14 +88,20 @@ function readArray(opts) {
     data_type: gdalType,
     pixel_space: data.stride[1] * data.data.BYTES_PER_ELEMENT,
     line_space: data.stride[0] * data.data.BYTES_PER_ELEMENT,
-    offset: data.offset
+    offset: data.offset,
+    resampling,
+    progress_cb
   });
 
   return data;
 }
 
 /**
- * Write the selected region from the given ndarray
+ * Write the selection region from the given ndarray.
+ *
+ * x, y specify the origin of the selection region and width and height specify its size.
+ * [x, y] default to [0, 0], [width, height] default to the size of the array.
+ * Resampling when writing is not supported by GDAL.
  *
  * @method writeArray
  * @param {ArrayOptions} options
@@ -94,10 +110,11 @@ function readArray(opts) {
  * @param {number} [options.y]
  * @param {number} [options.width]
  * @param {number} [options.height]
+ * @param {ProgressCb} [options.progress_cb]
  * @returns {void}
  */
 function writeArray(opts) {
-  let { data, x, y, width, height } = opts || {};
+  let { data, x, y, width, height, resampling, progress_cb } = opts || {};
 
   if (!data || !data.stride) {
     throw new TypeError('data must be an \'ndarray\'');
@@ -105,6 +122,10 @@ function writeArray(opts) {
 
   if (data.shape.length != 2) {
     throw new RangeError('data must have exactly 2 dimensions');
+  }
+
+  if (resampling) {
+    throw new Error('resampling when writing is not supported');
   }
 
   if (!y) y = 0;
@@ -123,7 +144,8 @@ function writeArray(opts) {
     data_type: gdalType,
     pixel_space: data.stride[1] * data.data.BYTES_PER_ELEMENT,
     line_space: data.stride[0] * data.data.BYTES_PER_ELEMENT,
-    offset: data.offset
+    offset: data.offset,
+    progress_cb
   });
 
   return data;
