@@ -2,7 +2,7 @@ import ndarray from 'ndarray'
 
 declare module 'gdal-async' {
 
-export type ArrayOptions = { data?: ndarray.NdArray, y?: number,  width?: number, height?: number, resampling?: string, progress_cb?: ProgressCb  }
+export type ArrayOptions = { data?: ndarray.NdArray, x?: number, y?: number,  width?: number, height?: number, resampling?: string, progress_cb?: ProgressCb  }
 
 export interface RasterBandPixels {
 /**

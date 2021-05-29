@@ -29,7 +29,7 @@ fromGDALDataType[gdal.GDT_Float32] = Float32Array;
 fromGDALDataType[gdal.GDT_Float64] = Float64Array;
 
 /**
- * @typedef ArrayOptions { data?: ndarray.NdArray, y?: number,  width?: number, height?: number, resampling?: string, progress_cb?: ProgressCb  }
+ * @typedef ArrayOptions { data?: ndarray.NdArray, x?: number, y?: number,  width?: number, height?: number, resampling?: string, progress_cb?: ProgressCb  }
  */
 
 /**

@@ -10,6 +10,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
  - Allow specifying of the resampling algorithm
  - Allow specifying a progress callback
  - Generate `index.d.ts` with yatag
+ - Switch the unit testing to TS
 
 ## [1.0.0] 2021-05-29
 
