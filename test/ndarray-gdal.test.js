@@ -73,6 +73,7 @@ describe('ndarray-gdal', () => {
       assert.isTrue(ops.equals(nd, ndarray(original, [ ds.rasterSize.y, ds.rasterSize.x ])));
     });
 
+
     it('should support row-negative stride', () => {
       const nd = ndarray(new Uint8Array(ds.rasterSize.x * ds.rasterSize.y), [ ds.rasterSize.y, ds.rasterSize.x ], [ -ds.rasterSize.x, 1 ]);
 
