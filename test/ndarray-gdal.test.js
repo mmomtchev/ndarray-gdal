@@ -86,6 +86,34 @@ describe('ndarray-gdal', () => {
       assert.isTrue(ops.equals(nd, ndarray(original, [ ds.rasterSize.y, ds.rasterSize.x ])));
     });
 
+    it('should support partial reads', () => {
+      // The top left quadrant of sample.tif is all zeros
+      const w = 16, h = 12;
+      const nd = ndarray(new Uint8Array(w*h), [ h, w ]);
+      band.pixels.readArray({ data: nd, x: 0, y: 0, width: w, height: h });
+      assert.equal(nd.shape[0], h);
+      assert.equal(nd.shape[1], w);
+      assert.equal(nd.stride[0], w);
+      assert.equal(nd.stride[1], 1);
+      const zero = ndarray(new Uint8Array(w*h), [ h, w ]);
+      ops.assigns(zero, 0);
+      assert.isTrue(ops.equals(nd, zero));
+    });
+
+    it('should resample on the fly if data cannot hold all the data', () => {
+      // But the rest is not
+      const w = 16, h = 12;
+      const nd = ndarray(new Uint8Array(w*h), [ h, w ]);
+      band.pixels.readArray({ data: nd });
+      assert.equal(nd.shape[0], 12);
+      assert.equal(nd.shape[1], 16);
+      assert.equal(nd.stride[0], 16);
+      assert.equal(nd.stride[1], 1);
+      const zero = ndarray(new Uint8Array(w*h), [ h, w ]);
+      ops.assigns(zero, 0);
+      assert.isFalse(ops.equals(nd, zero));
+    });
+
     it('should throw when data is not an ndarray', () => {
       assert.throws(() => band.pixels.readArray({ data: {} }));
     }, /data must be/);
