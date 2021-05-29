@@ -9,6 +9,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
  - Improve the the documentation
  - Allow specifying of the resampling algorithm
  - Allow specifying a progress callback
+ - Generate `index.d.ts` with yatag
 
 ## [1.0.0] 2021-05-29
 

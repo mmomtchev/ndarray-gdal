@@ -32,6 +32,13 @@ fromGDALDataType[gdal.GDT_Float64] = Float64Array;
  * @typedef ArrayOptions { data?: ndarray.NdArray, y?: number,  width?: number, height?: number, resampling?: string, progress_cb?: ProgressCb  }
  */
 
+/**
+ *
+ * @class RasterBandPixels
+ *
+ * These functions are an augmentation of the gdal class gdal.RasterBandPixels
+ */
+
 
 /**
  * Read the selection region into the given ndarray or a new ndarray.
@@ -46,14 +53,14 @@ fromGDALDataType[gdal.GDT_Float64] = Float64Array;
  *
  * @method readArray
  * @param {ArrayOptions} [options]
- * @param {ndarray.NdArray} [options.data]
+ * @param {ndarray.NdArray<2>} [options.data]
  * @param {number} [options.x]
  * @param {number} [options.y]
  * @param {number} [options.width]
  * @param {number} [options.height]
  * @param {string} [options.resampling]
  * @param {ProgressCb} [options.progress_cb]
- * @returns {ndarray.NdArray}
+ * @returns {ndarray.NdArray<2>}
  */
 function readArray(opts) {
   let { data, x, y, width, height, resampling, progress_cb } = opts || {};
@@ -105,7 +112,7 @@ function readArray(opts) {
  *
  * @method writeArray
  * @param {ArrayOptions} options
- * @param {ndarray.NdArray} options.data
+ * @param {ndarray.NdArray<2>} options.data
  * @param {number} [options.x]
  * @param {number} [options.y]
  * @param {number} [options.width]
