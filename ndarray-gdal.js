@@ -2,6 +2,13 @@
 const ndarray = require('ndarray');
 const gdal = require('gdal-async');
 
+const gdal_async_version = require('gdal-async/package.json').version.split('.');
+if (gdal_async_version[0] < 3 ||
+  gdal_async_version[0] == 3 && gdal_async_version[1] < 2 ||
+  gdal_async_version[0] == 3 && gdal_async_version[1] == 2 && gdal_async_version[2] < 99) {
+  throw new Error(`ndarray-gdal requires gdal-async@3.2.99 or later, ${gdal_async_version.join('.')} found`);
+}
+
 const toGDALDataType = {
   int16: gdal.GDT_Int16,
   int32: gdal.GDT_Int32,
@@ -13,13 +20,13 @@ const toGDALDataType = {
 };
 
 const fromGDALDataType = {};
-fromGDALDataType[gdal.GDT_Int16] = 'int16';
-fromGDALDataType[gdal.GDT_Int32] = 'int32';
-fromGDALDataType[gdal.GDT_Byte] = 'uint8';
-fromGDALDataType[gdal.GDT_UInt16] = 'uint16';
-fromGDALDataType[gdal.GDT_UInt32] = 'uint32';
-fromGDALDataType[gdal.GDT_Float32] = 'float32';
-fromGDALDataType[gdal.GDT_Float64] = 'float64';
+fromGDALDataType[gdal.GDT_Int16] = Int16Array;
+fromGDALDataType[gdal.GDT_Int32] = Int32Array;
+fromGDALDataType[gdal.GDT_Byte] = Uint8Array;
+fromGDALDataType[gdal.GDT_UInt16] = Uint16Array;
+fromGDALDataType[gdal.GDT_UInt32] = Uint32Array;
+fromGDALDataType[gdal.GDT_Float32] = Float32Array;
+fromGDALDataType[gdal.GDT_Float64] = Float64Array;
 
 /**
  * @typedef ArrayOptions { data?: ndarray.NdArray, y?: number,  width?: number, height?: number }
@@ -30,7 +37,7 @@ fromGDALDataType[gdal.GDT_Float64] = 'float64';
  * Read the selected region into the given ndarray or a new ndarray
  *
  * @method readArray
- * @param {ArrayOptions} options
+ * @param {ArrayOptions} [options]
  * @param {ndarray.NdArray} [options.data]
  * @param {number} [options.x]
  * @param {number} [options.y]
@@ -38,17 +45,15 @@ fromGDALDataType[gdal.GDT_Float64] = 'float64';
  * @param {number} [options.height]
  * @returns {ndarray.NdArray}
  */
-function readArray({ data, x, y, width, height }) {
+function readArray(opts) {
+  let { data, x, y, width, height } = opts || {};
   if (!y) y = 0;
   if (!x) x = 0;
+  if (!height) height = this.band.size.y;
+  if (!width) width = this.band.size.x;
 
   if (!data) {
-    if (!height || !width) {
-      throw new TypeError('without data, width and height are mandatory');
-    }
-    const ta = this.read(x, y, width, height);
-    const nd = ndarray(ta, [ height, width ]);
-    return nd;
+    data = ndarray(new fromGDALDataType[this.band.dataType](height * width), [ height, width ]);
   }
 
   if (!data.stride) {
@@ -84,14 +89,16 @@ function readArray({ data, x, y, width, height }) {
  *
  * @method writeArray
  * @param {ArrayOptions} options
- * @param {ndarray.NdArray} [options.data]
+ * @param {ndarray.NdArray} options.data
  * @param {number} [options.x]
  * @param {number} [options.y]
  * @param {number} [options.width]
  * @param {number} [options.height]
  * @returns {void}
  */
-function writeArray({ data, x, y, width, height }) {
+function writeArray(opts) {
+  let { data, x, y, width, height } = opts || {};
+
   if (!data || !data.stride) {
     throw new TypeError('data must be an \'ndarray\'');
   }

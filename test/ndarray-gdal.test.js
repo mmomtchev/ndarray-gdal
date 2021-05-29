@@ -47,6 +47,15 @@ describe('ndarray-gdal', () => {
       assert.deepEqual(original, nd.data);
     });
 
+    it('should guess the size with no arguments', () => {
+      const nd = band.pixels.readArray();
+      assert.equal(nd.shape[0], ds.rasterSize.y);
+      assert.equal(nd.shape[1], ds.rasterSize.x);
+      assert.equal(nd.stride[0], ds.rasterSize.x);
+      assert.equal(nd.stride[1], 1);
+      assert.deepEqual(original, nd.data);
+    });
+
     it('should support column-major stride', () => {
       const nd = ndarray(new Uint8Array(ds.rasterSize.x * ds.rasterSize.y), [ ds.rasterSize.y, ds.rasterSize.x ], [ 1, ds.rasterSize.y ]);
       band.pixels.readArray({ data: nd, width: ds.rasterSize.x, height: ds.rasterSize.y });
@@ -85,9 +94,6 @@ describe('ndarray-gdal', () => {
     });
     it('should throw when the datatype is not supported', () => {
       assert.throws(() => band.pixels.readArray({ data: ndarray(new Int8Array(4), [ 2, 2 ]) }));
-    });
-    it('should throw with no arguments', () => {
-      assert.throws(() => band.pixels.readArray({ }));
     });
   });
 

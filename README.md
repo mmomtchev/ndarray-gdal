@@ -5,7 +5,7 @@
 ![Node.js CI](https://github.com/mmomtchev/ndarray-gdal/workflows/Node.js%20CI/badge.svg)
 [![codecov](https://codecov.io/gh/mmomtchev/ndarray-gdal/branch/master/graph/badge.svg?token=UhQePZnXkt)](https://codecov.io/gh/mmomtchev/ndarray-gdal)
 
-Plugin for `gdal-async` allowing zero-copy I/O from and to [`scijs/ndarray`](https://github.com/scijs/ndarray).
+Plugin for [`gdal-async`](https://github.com/mmomtchev/node-gdal-async) allowing zero-copy I/O from and to [`scijs/ndarray`](https://github.com/scijs/ndarray).
 
 This module requires at least `gdal-async@3.2.99`.
 

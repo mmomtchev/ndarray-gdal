@@ -15,7 +15,7 @@ export interface RasterBandPixels {
      * Read the selected region into the given ndarray or a new ndarray
      *
      * @method readArray
-     * @param {ArrayOptions} options
+     * @param {ArrayOptions} [options]
      * @param {ndarray.NdArray<2>} [options.data]
      * @param {number} [options.x]
      * @param {number} [options.y]
@@ -30,7 +30,7 @@ export interface RasterBandPixels {
      *
      * @method writeArray
      * @param {ArrayOptions} options
-     * @param {ndarray.NdArray} [options.data]
+     * @param {ndarray.NdArray} options.data
      * @param {number} [options.x]
      * @param {number} [options.y]
      * @param {number} [options.width]
