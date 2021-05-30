@@ -60,6 +60,7 @@ fromGDALDataType[gdal.GDT_Float64] = Float64Array;
  * @param {number} [options.height]
  * @param {string} [options.resampling]
  * @param {ProgressCb} [options.progress_cb]
+ * @throws {Error}
  * @returns {ndarray.NdArray<2>}
  */
 
@@ -145,6 +146,7 @@ const makeReadArray = (fn) => function readArray(opts) {
  * @param {number} [options.width]
  * @param {number} [options.height]
  * @param {ProgressCb} [options.progress_cb]
+ * @throws {Error}
  * @returns {void}
  */
 
