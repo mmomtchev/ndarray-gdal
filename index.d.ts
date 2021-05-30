@@ -32,6 +32,7 @@ export interface RasterBandPixels {
  * @param {number} [options.height]
  * @param {string} [options.resampling]
  * @param {ProgressCb} [options.progress_cb]
+ * @throws {Error}
  * @returns {ndarray.NdArray<2>}
  */
   readArray(options?: ArrayOptions): ndarray.NdArray<2>
@@ -75,6 +76,7 @@ export interface RasterBandPixels {
  * @param {number} [options.width]
  * @param {number} [options.height]
  * @param {ProgressCb} [options.progress_cb]
+ * @throws {Error}
  * @returns {void}
  */
   writeArray(options: ArrayOptions): void
