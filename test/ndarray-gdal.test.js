@@ -9,9 +9,21 @@ describe('ndarray-gdal JS', () => {
     });
   });
 
+  describe('readArrayAsync', () => {
+    it('should exist', () => {
+      assert.isFunction(gdal.RasterBandPixels.prototype.readArrayAsync);
+    });
+  });
+
   describe('writeArray', () => {
     it('should exist', () => {
       assert.isFunction(gdal.RasterBandPixels.prototype.writeArray);
+    });
+  });
+
+  describe('writeArrayAsync', () => {
+    it('should exist', () => {
+      assert.isFunction(gdal.RasterBandPixels.prototype.writeArrayAsync);
     });
   });
 });

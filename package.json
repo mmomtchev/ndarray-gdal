@@ -35,6 +35,7 @@
   },
   "devDependencies": {
     "@types/chai": "^4.2.18",
+    "@types/chai-as-promised": "^7.1.4",
     "@types/mocha": "^8.2.2",
     "@types/ndarray": "^1.0.9",
     "@types/ndarray-ops": "^1.2.1",
@@ -42,6 +43,7 @@
     "@typescript-eslint/eslint-plugin": "^4.25.0",
     "@typescript-eslint/parser": "^4.25.0",
     "chai": "^4.3.4",
+    "chai-as-promised": "^7.1.1",
     "eslint": "^7.27.0",
     "eslint-plugin-array-func": "^3.1.7",
     "eslint-plugin-mocha": "^9.0.0",
@@ -53,5 +55,6 @@
     "ts-node": "^10.0.0",
     "typescript": "^4.3.2",
     "yatag": "^1.0.11"
-  }
+  },
+  "dependencies": {}
 }

@@ -2,7 +2,10 @@ import * as gdal from 'gdal-async';
 import ndarray from 'ndarray';
 import '..';
 import ops from 'ndarray-ops';
-import { assert } from 'chai';
+import * as chai from 'chai';
+import chaiAsPromised from 'chai-as-promised';
+const assert = chai.assert;
+chai.use(chaiAsPromised);
 
 describe('ndarray-gdal TS', () => {
   describe('readArray', () => {
@@ -144,6 +147,20 @@ describe('ndarray-gdal TS', () => {
     });
   });
 
+  describe('readArrayAsync', () => {
+    it('should exist', () => {
+      assert.isFunction(gdal.RasterBandPixels.prototype.readArrayAsync);
+    });
+
+    it('should support async reading of ndarray', () => {
+      const ds = gdal.open('test/sample.tif');
+      const band = ds.bands.get(1);
+      const original = band.pixels.read(0, 0, ds.rasterSize.x, ds.rasterSize.y);
+      const ndq = band.pixels.readArrayAsync();
+      return assert.isFulfilled(ndq.then((nd) => assert.deepEqual(original, nd.data)));
+    });
+  });
+
   describe('writeArray', () => {
     let src, dst;
 
@@ -226,4 +243,27 @@ describe('ndarray-gdal TS', () => {
     });
 
   });
+
+  describe('writeArrayAsync', () => {
+    it('should exist', () => {
+      assert.isFunction(gdal.RasterBandPixels.prototype.writeArrayAsync);
+    });
+
+    it('should support async reading of ndarray', () => {
+      const src = gdal.open('test/sample.tif');
+      const dst = gdal.open('temp', 'w', 'MEM', src.rasterSize.x, src.rasterSize.y, 1);
+      const original = src.bands.get(1).pixels.readArray({ width: src.rasterSize.x, height: src.rasterSize.y });
+
+      const q = dst.bands.get(1).pixels.writeArrayAsync({
+        width: src.rasterSize.x,
+        height: src.rasterSize.y,
+        data: original });
+
+      return assert.isFulfilled(q.then(() => {
+        const res = dst.bands.get(1).pixels.readArray({ width: src.rasterSize.x, height: src.rasterSize.y });
+        assert.deepEqual(original.data, res.data);
+      }));
+    });
+  });
+
 });
