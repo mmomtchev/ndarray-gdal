@@ -22,7 +22,7 @@ const gdal = require('gdal-async');
 const ndarray = require('ndarray');
 require('ndarray-gdal');
 
-const ds = gdal.open('sample.tif');
+const ds = gdal.open('test/sample.tif');
 const band = ds.bands.get(1);
 
 // Creating a new ndarray
@@ -53,10 +53,21 @@ import * as gdal from 'gdal-async';
 import ndarray from 'ndarray';
 import 'ndarray-gdal';
 
-const ds: gdal.Dataset = gdal.open('sample.tif');
+const ds: gdal.Dataset = gdal.open('test/sample.tif');
 const nd: ndarray.NdArray<2> = ds.bands.get(1).pixels.readArray({
                 width: ds.rasterSize.x, 
                 height: ds.rasterSize.y });
+```
+
+## Asynchronous I/O
+
+Same rules for asynchronous I/O as `gdal-async` apply, you should refer to its documentation.
+
+```js
+const nd = await gdal.openAsync('test/sample.tif')
+            .then((ds) => ds.bands.getAsync(1))
+            .then((band) => band.pixels.readArrayAsync())
+            .catch((e) => console.error(`bad things happened ${e}`));
 ```
 
 # Copyright
