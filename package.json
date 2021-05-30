@@ -7,7 +7,7 @@
   "scripts": {
     "test": "mocha --require ts-node/register -R tap test/*.test.?s",
     "build": "npx yatag",
-    "c8": "npx c8 node node_modules/.bin/mocha",
+    "c8": "npx c8 node node_modules/.bin/mocha --require ts-node/register -R tap test/*.test.?s",
     "lcov": "npx c8 report --reporter=text-lcov > coverage/tests.lcov",
     "codecov": "curl -s https://codecov.io/bash | bash"
   },
