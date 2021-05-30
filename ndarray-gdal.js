@@ -201,7 +201,15 @@ const makeWriteArray = (fn) => function writeArray(opts) {
   });
 };
 
+const rejectOnException = (fn) => function (opts) {
+  try {
+    return fn.call(this, opts);
+  } catch (e) {
+    return Promise.reject(e);
+  }
+};
+
 gdal.RasterBandPixels.prototype.readArray = makeReadArray(gdal.RasterBandPixels.prototype.read);
 gdal.RasterBandPixels.prototype.writeArray = makeWriteArray(gdal.RasterBandPixels.prototype.write);
-gdal.RasterBandPixels.prototype.readArrayAsync = makeReadArray(gdal.RasterBandPixels.prototype.readAsync);
-gdal.RasterBandPixels.prototype.writeArrayAsync = makeWriteArray(gdal.RasterBandPixels.prototype.writeAsync);
+gdal.RasterBandPixels.prototype.readArrayAsync = rejectOnException(makeReadArray(gdal.RasterBandPixels.prototype.readAsync));
+gdal.RasterBandPixels.prototype.writeArrayAsync = rejectOnException(makeWriteArray(gdal.RasterBandPixels.prototype.writeAsync));

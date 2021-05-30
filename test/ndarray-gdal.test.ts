@@ -159,6 +159,12 @@ describe('ndarray-gdal TS', () => {
       const ndq = band.pixels.readArrayAsync();
       return assert.isFulfilled(ndq.then((nd) => assert.deepEqual(original, nd.data)));
     });
+
+    it('should return a rejected Promise instead of throwing on error', () =>
+      assert.isRejected(gdal.open('test/sample.tif').bands.get(1).pixels.readArrayAsync({
+        data: ndarray(new Uint8Array(1), [ 1 ]) }),
+      /2 dimensions/)
+    );
   });
 
   describe('writeArray', () => {
@@ -264,6 +270,14 @@ describe('ndarray-gdal TS', () => {
         assert.deepEqual(original.data, res.data);
       }));
     });
+
+    it('should return a rejected Promise instead of throwing on error', () =>
+      assert.isRejected(gdal.open('test/sample.tif').bands.get(1).pixels.writeArrayAsync({
+        data: ndarray(new Uint8Array(4), [ 2, 2 ]),
+        resampling: gdal.GRA_Bilinear }),
+      /resampling.*not supported/)
+    );
+
   });
 
 });
