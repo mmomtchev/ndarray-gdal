@@ -4,9 +4,8 @@ const gdal = require('gdal-async');
 
 const gdal_async_version = require('gdal-async/package.json').version.split('.');
 if (gdal_async_version[0] < 3 ||
-  gdal_async_version[0] == 3 && gdal_async_version[1] < 2 ||
-  gdal_async_version[0] == 3 && gdal_async_version[1] == 2 && gdal_async_version[2] < 99) {
-  throw new Error(`ndarray-gdal requires gdal-async@3.2.99 or later, ${gdal_async_version.join('.')} found`);
+  gdal_async_version[0] == 3 && gdal_async_version[1] < 3) {
+  throw new Error(`ndarray-gdal requires gdal-async@3.3.0 or later, ${gdal_async_version.join('.')} found`);
 }
 
 const toGDALDataType = {
