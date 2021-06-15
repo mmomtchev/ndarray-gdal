@@ -407,10 +407,21 @@ describe('ndarray-gdal TS', () => {
         return assert.isFulfilled(ndq.then((nd) => assert.isTrue(ops.equals(original, nd))));
       });
 
-      it('should return a rejected Promise instead of throwing on error', () =>
+      it('should return a rejected Promise when data is not an ndarray', () =>
+        assert.isRejected(gdal.open(path.resolve(__dirname, 'gfs.t00z.alnsf.nc'), 'mr').root.arrays.get('alnsf').readArrayAsync({
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
+          data: {} as any }),
+        /data must be/)
+      );
+      it('should return a rejected Promise when the array does not have the right number of dimensions', () =>
         assert.isRejected(gdal.open(path.resolve(__dirname, 'gfs.t00z.alnsf.nc'), 'mr').root.arrays.get('alnsf').readArrayAsync({
           data: ndarray(new Uint8Array(1), [ 1 ]) }),
         /3 dimensions/)
+      );
+      it('should return a rejected Promise when the datatype is not supported by GDAL', () =>
+        assert.isRejected(gdal.open(path.resolve(__dirname, 'gfs.t00z.alnsf.nc'), 'mr').root.arrays.get('alnsf').readArrayAsync({
+          data: ndarray(new Int8Array(1), [ 1, 1, 1 ]) }),
+        /Type.*not supported/)
       );
     });
   });
