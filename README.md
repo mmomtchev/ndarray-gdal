@@ -7,7 +7,7 @@
 
 Plugin for [`gdal-async`](https://github.com/mmomtchev/node-gdal-async) allowing zero-copy I/O from and to [`scijs/ndarray`](https://github.com/scijs/ndarray).
 
-This module requires at least `gdal-async@3.2.99`.
+This module requires at least `gdal-async@3.3.0`.
 
 # Installation
 
@@ -38,7 +38,25 @@ band.pixels.readArray({ data: nd2 });
 band.pixels.writeArray({ data: nd2 });
 ```
 
-I/O from and to all strides is supported without copying/rotation, but positive/positive row-major stride will be the fastest as it is usually the one that matches the file format. Interleaving is provided by the GDAL C++ implementation which uses SIMD instructions on CPUs that support it.
+I/O from and to all strides is supported without copying/rotation, but positive/positive row-major stride will be the fastest as this is usually the ordering that matches the file format. Interleaving is provided by the GDAL C++ implementation which uses SIMD instructions on CPUs that support it.
+
+## Multi-dimensional arrays
+
+When used with GDAL >= 3.1, `ndarray-gdal` supports the new Multidimensional Raster Data Model.
+
+```js
+const gdal_array = gdal.open('gfs.t00z.alnsf.nc', 'mr').root.arrays.get('alnsf');
+// Into existing ndarray keeping its stride
+const nd1 = ndarray(new Float32Array(array.length), 
+                    gdal_array.dimensions.map((dim) => dim.size));
+gdal_array.readArray({ data: nd });
+// Into a new ndarray
+const nd2 = gdal_array.readArray();
+// Async
+const nd3 = await gdal_array.readArrayAsync();
+```
+
+Multidimensional arrays are currently read-only.
 
 ## TypeScript
 
