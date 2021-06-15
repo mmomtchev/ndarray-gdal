@@ -3,27 +3,45 @@ require('../ndarray-gdal');
 const { assert } = require('chai');
 
 describe('ndarray-gdal JS', () => {
-  describe('readArray', () => {
-    it('should exist', () => {
-      assert.isFunction(gdal.RasterBandPixels.prototype.readArray);
+  describe('gdal.RasterBand', () => {
+    describe('readArray', () => {
+      it('should exist', () => {
+        assert.isFunction(gdal.RasterBandPixels.prototype.readArray);
+      });
+    });
+
+    describe('readArrayAsync', () => {
+      it('should exist', () => {
+        assert.isFunction(gdal.RasterBandPixels.prototype.readArrayAsync);
+      });
+    });
+
+    describe('writeArray', () => {
+      it('should exist', () => {
+        assert.isFunction(gdal.RasterBandPixels.prototype.writeArray);
+      });
+    });
+
+    describe('writeArrayAsync', () => {
+      it('should exist', () => {
+        assert.isFunction(gdal.RasterBandPixels.prototype.writeArrayAsync);
+      });
     });
   });
 
-  describe('readArrayAsync', () => {
-    it('should exist', () => {
-      assert.isFunction(gdal.RasterBandPixels.prototype.readArrayAsync);
-    });
-  });
+  if (gdal.MDArray) {
+    describe('gdal.MDArray', () => {
+      describe('readArray', () => {
+        it('should exist', () => {
+          assert.isFunction(gdal.MDArray.prototype.readArray);
+        });
+      });
 
-  describe('writeArray', () => {
-    it('should exist', () => {
-      assert.isFunction(gdal.RasterBandPixels.prototype.writeArray);
+      describe('readArrayAsync', () => {
+        it('should exist', () => {
+          assert.isFunction(gdal.MDArray.prototype.readArrayAsync);
+        });
+      });
     });
-  });
-
-  describe('writeArrayAsync', () => {
-    it('should exist', () => {
-      assert.isFunction(gdal.RasterBandPixels.prototype.writeArrayAsync);
-    });
-  });
+  }
 });
