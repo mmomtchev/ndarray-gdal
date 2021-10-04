@@ -72,7 +72,7 @@ import ndarray from 'ndarray';
 import 'ndarray-gdal';
 
 const ds: gdal.Dataset = gdal.open('test/sample.tif');
-const nd: ndarray.NdArray<2> = ds.bands.get(1).pixels.readArray({
+const nd: ndarray.NdArray = ds.bands.get(1).pixels.readArray({
                 width: ds.rasterSize.x, 
                 height: ds.rasterSize.y });
 ```

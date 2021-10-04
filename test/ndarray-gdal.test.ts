@@ -45,7 +45,7 @@ describe('ndarray-gdal TS', () => {
       });
 
       it('should write to a preallocated array', () => {
-        const nd = ndarray<2>(new Uint8Array(ds.rasterSize.x * ds.rasterSize.y), [ ds.rasterSize.y, ds.rasterSize.x ]);
+        const nd = ndarray(new Uint8Array(ds.rasterSize.x * ds.rasterSize.y), [ ds.rasterSize.y, ds.rasterSize.x ]);
 
         band.pixels.readArray({ data: nd });
 
@@ -67,7 +67,7 @@ describe('ndarray-gdal TS', () => {
       });
 
       it('should support column-major stride', () => {
-        const nd = ndarray<2>(new Uint8Array(ds.rasterSize.x * ds.rasterSize.y),
+        const nd = ndarray(new Uint8Array(ds.rasterSize.x * ds.rasterSize.y),
           [ ds.rasterSize.y, ds.rasterSize.x ], [ 1, ds.rasterSize.y ]);
 
         band.pixels.readArray({ data: nd, width: ds.rasterSize.x, height: ds.rasterSize.y });
@@ -80,7 +80,7 @@ describe('ndarray-gdal TS', () => {
       });
 
       it('should support row-negative stride', () => {
-        const nd = ndarray<2>(new Uint8Array(ds.rasterSize.x * ds.rasterSize.y),
+        const nd = ndarray(new Uint8Array(ds.rasterSize.x * ds.rasterSize.y),
           [ ds.rasterSize.y, ds.rasterSize.x ], [ -ds.rasterSize.x, 1 ]);
 
         band.pixels.readArray({ data: nd, width: ds.rasterSize.x, height: ds.rasterSize.y });
@@ -93,7 +93,7 @@ describe('ndarray-gdal TS', () => {
       });
 
       it('should support column-negative stride', () => {
-        const nd = ndarray<2>(new Uint8Array(ds.rasterSize.x * ds.rasterSize.y),
+        const nd = ndarray(new Uint8Array(ds.rasterSize.x * ds.rasterSize.y),
           [ ds.rasterSize.y, ds.rasterSize.x ], [ 1, -ds.rasterSize.y ]);
 
         band.pixels.readArray({ data: nd, width: ds.rasterSize.x, height: ds.rasterSize.y });
@@ -108,7 +108,7 @@ describe('ndarray-gdal TS', () => {
       it('should support partial reads', () => {
       // The top left quadrant of sample.tif is all zeros
         const w = 16, h = 12;
-        const nd = ndarray<2>(new Uint8Array(w*h), [ h, w ]);
+        const nd = ndarray(new Uint8Array(w*h), [ h, w ]);
 
         band.pixels.readArray({ data: nd, x: 0, y: 0, width: w, height: h });
 
@@ -124,7 +124,7 @@ describe('ndarray-gdal TS', () => {
       it('should resample on the fly if data cannot hold all the data', () => {
       // But the rest is not
         const w = 16, h = 12;
-        const nd = ndarray<2>(new Uint8Array(w*h), [ h, w ]);
+        const nd = ndarray(new Uint8Array(w*h), [ h, w ]);
 
         band.pixels.readArray({ data: nd });
 

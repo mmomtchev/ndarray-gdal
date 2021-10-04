@@ -28,7 +28,7 @@ fromGDALDataType[gdal.GDT_Float32] = Float32Array;
 fromGDALDataType[gdal.GDT_Float64] = Float64Array;
 
 /**
- * @typedef ArrayOptions { data?: ndarray.NdArray<2>, x?: number, y?: number,  width?: number, height?: number, resampling?: string, progress_cb?: ProgressCb  }
+ * @typedef ArrayOptions { data?: ndarray.NdArray<any>, x?: number, y?: number,  width?: number, height?: number, resampling?: string, progress_cb?: ProgressCb  }
  */
 
 /**
@@ -52,7 +52,7 @@ fromGDALDataType[gdal.GDT_Float64] = Float64Array;
  *
  * @method readArray
  * @param {ArrayOptions} [options]
- * @param {ndarray.NdArray<2>} [options.data]
+ * @param {ndarray.NdArray<any>} [options.data]
  * @param {number} [options.x]
  * @param {number} [options.y]
  * @param {number} [options.width]
@@ -60,7 +60,7 @@ fromGDALDataType[gdal.GDT_Float64] = Float64Array;
  * @param {string} [options.resampling]
  * @param {ProgressCb} [options.progress_cb]
  * @throws {Error}
- * @returns {ndarray.NdArray<2>}
+ * @returns {ndarray.NdArray<any>}
  */
 
 /**
@@ -76,14 +76,14 @@ fromGDALDataType[gdal.GDT_Float64] = Float64Array;
  *
  * @method readArrayAsync
  * @param {ArrayOptions} [options]
- * @param {ndarray.NdArray<2>} [options.data]
+ * @param {ndarray.NdArray<any>} [options.data]
  * @param {number} [options.x]
  * @param {number} [options.y]
  * @param {number} [options.width]
  * @param {number} [options.height]
  * @param {string} [options.resampling]
  * @param {ProgressCb} [options.progress_cb]
- * @returns {Promise<ndarray.NdArray<2>>}
+ * @returns {Promise<ndarray.NdArray<any>>}
  */
 
 const makeBandReadArray = (fn) => function readArray(opts) {
@@ -139,7 +139,7 @@ const makeBandReadArray = (fn) => function readArray(opts) {
  *
  * @method writeArray
  * @param {ArrayOptions} options
- * @param {ndarray.NdArray<2>} options.data
+ * @param {ndarray.NdArray<any>} options.data
  * @param {number} [options.x]
  * @param {number} [options.y]
  * @param {number} [options.width]
@@ -158,7 +158,7 @@ const makeBandReadArray = (fn) => function readArray(opts) {
  *
  * @method writeArrayAsync
  * @param {ArrayOptions} options
- * @param {ndarray.NdArray<2>} options.data
+ * @param {ndarray.NdArray<any>} options.data
  * @param {number} [options.x]
  * @param {number} [options.y]
  * @param {number} [options.width]
