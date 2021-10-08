@@ -28,7 +28,14 @@ fromGDALDataType[gdal.GDT_Float32] = Float32Array;
 fromGDALDataType[gdal.GDT_Float64] = Float64Array;
 
 /**
- * @typedef ArrayOptions { data?: ndarray.NdArray<any>, x?: number, y?: number,  width?: number, height?: number, resampling?: string, progress_cb?: ProgressCb  }
+ * @typedef ArrayOptions
+ * @property {ndarray.NdArray<any>} [data]
+ * @property {number} [x]
+ * @property {number} [y]
+ * @property {number} [width]
+ * @property {number} [height]
+ * @property {string} [resampling]
+ * @property {ProgressCb} [progress_cb]
  */
 
 /**
@@ -202,9 +209,11 @@ const makeBandWriteArray = (fn) => function writeArray(opts) {
   });
 };
 
-
 /**
- * @typedef NDArrayOptions { data?: ndarray.NdArray, origin?: number[], span?: number[] }
+ * @typedef NDArrayOptions
+ * @property {ndarray.NdArray} [data]
+ * @property {number[]} [origin]
+ * @property {number[]} [span]
  */
 
 /**
