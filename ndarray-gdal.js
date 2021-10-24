@@ -299,7 +299,7 @@ async function MDArrayReadArrayAsync(opts) {
 
   const dims = await this.dimensions.countAsync();
   if (!origin) origin = new Array(dims).fill(0);
-  //if (!span) span = this.dimensions.map((dim) => dim.size);
+
   if (!span) {
     span = await Promise.all((() => {
       const result = [];
