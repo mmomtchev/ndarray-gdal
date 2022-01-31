@@ -40,6 +40,8 @@ band.pixels.writeArray({ data: nd2 });
 
 I/O from and to all strides is supported without copying/rotation, but positive/positive row-major stride will be the fastest as this is usually the ordering that matches the file format. Interleaving is provided by the GDAL C++ implementation which uses SIMD instructions on CPUs that support it.
 
+***⚠️ The default coordinate order in GDAL is `(x, y)`, while ndarray uses `(y, x)`***
+
 ## Multi-dimensional arrays
 
 When used with GDAL >= 3.1, `ndarray-gdal` supports the new Multidimensional Raster Data Model.
