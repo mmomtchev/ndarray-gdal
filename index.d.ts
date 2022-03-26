@@ -1,10 +1,12 @@
-import ndarray from 'ndarray'
-import * as gdal from 'gdal-async'
+import ndarray from 'ndarray';
+import * as stdlib from '@stdlib/types/ndarray';
+import * as gdal from 'gdal-async';
+
 
 declare module 'gdal-async' {
 
 export type ArrayOptions = {
-	data?: ndarray.NdArray<TypedArray>;
+	data?: ndarray.NdArray<TypedArray>|stdlib.ndarray;
 	x?: number;
 	y?: number;
 	width?: number;
@@ -14,7 +16,7 @@ export type ArrayOptions = {
 }
 
 export type NDArrayOptions = {
-	data?: ndarray.NdArray<TypedArray>;
+	data?: ndarray.NdArray<TypedArray>|stdlib.ndarray;
 	origin?: number[];
 	span?: number[];
 }
@@ -60,7 +62,6 @@ export interface MDArray {
  * @param {ndarray.NdArray<TypedArray>} [options.data] Existing ndarray to use
  * @param {number[]} [options.origin] [0, ...] if not specified
  * @param {number[]} [options.span] Full size if not specified
-
  * @returns {Promise<ndarray.NdArray<TypedArray>>}
  */
   readArrayAsync(options?: NDArrayOptions): Promise<ndarray.NdArray<TypedArray>>
@@ -132,7 +133,7 @@ export interface RasterBandPixels {
  *
  * @method writeArray
  * @param {ArrayOptions} options
- * @param {ndarray.NdArray<TypedArray>} options.data
+ * @param {ndarray.NdArray<TypedArray>|stdlib.ndarray} options.data
  * @param {number} [options.x]
  * @param {number} [options.y]
  * @param {number} [options.width]
@@ -152,7 +153,7 @@ export interface RasterBandPixels {
  *
  * @method writeArrayAsync
  * @param {ArrayOptions} options
- * @param {ndarray.NdArray<TypedArray>} options.data
+ * @param {ndarray.NdArray<TypedArray>|stdlib.ndarray} options.data
  * @param {number} [options.x]
  * @param {number} [options.y]
  * @param {number} [options.width]

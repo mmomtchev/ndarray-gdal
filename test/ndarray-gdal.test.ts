@@ -1,12 +1,15 @@
 import * as gdal from 'gdal-async';
 import ndarray from 'ndarray';
-import '..';
 import ops from 'ndarray-ops';
+import { array as stdarray } from '@stdlib/ndarray';
+
 import * as chai from 'chai';
 import * as path from 'path';
 import chaiAsPromised from 'chai-as-promised';
 const assert = chai.assert;
 chai.use(chaiAsPromised);
+
+import '..';
 
 describe('ndarray-gdal TS', () => {
   describe('gdal.RasterBand', () => {
@@ -30,7 +33,7 @@ describe('ndarray-gdal TS', () => {
       });
 
       it('should exist', () => {
-        assert.isFunction(gdal.RasterBandPixels.prototype.readArray);
+        assert.isFunction(gdal.RasterBandPixels.prototype.read);
       });
 
       it('should create a new array when needed', () => {
@@ -53,6 +56,18 @@ describe('ndarray-gdal TS', () => {
         assert.equal(nd.shape[1], ds.rasterSize.x);
         assert.equal(nd.stride[0], ds.rasterSize.x);
         assert.equal(nd.stride[1], 1);
+        assert.deepEqual(original, nd.data);
+      });
+
+      it('should write to a preallocated @stdlib array', () => {
+        const nd = stdarray(new Uint8Array(ds.rasterSize.x * ds.rasterSize.y), { shape: [ ds.rasterSize.y, ds.rasterSize.x ] });
+
+        band.pixels.readArray({ data: nd });
+
+        assert.equal(nd.shape[0], ds.rasterSize.y);
+        assert.equal(nd.shape[1], ds.rasterSize.x);
+        assert.equal(nd.strides[0], ds.rasterSize.x);
+        assert.equal(nd.strides[1], 1);
         assert.deepEqual(original, nd.data);
       });
 
@@ -162,6 +177,15 @@ describe('ndarray-gdal TS', () => {
         return assert.isFulfilled(ndq.then((nd) => assert.deepEqual(original, nd.data)));
       });
 
+      it('should support async reading of @stdlib ndarray', () => {
+        const ds = gdal.open('test/sample.tif');
+        const band = ds.bands.get(1);
+        const nd = stdarray(new Uint8Array(ds.rasterSize.x * ds.rasterSize.y), { shape: [ ds.rasterSize.y, ds.rasterSize.x ] });
+        const original = band.pixels.read(0, 0, ds.rasterSize.x, ds.rasterSize.y);
+        const ndq = band.pixels.readArrayAsync({ data: nd });
+        return assert.isFulfilled(ndq.then((nd) => assert.deepEqual(original, nd.data)));
+      });
+
       it('should return a rejected Promise instead of throwing on error', () =>
         assert.isRejected(gdal.open('test/sample.tif').bands.get(1).pixels.readArrayAsync({
           data: ndarray(new Uint8Array(1), [ 1 ]) }),
@@ -188,6 +212,16 @@ describe('ndarray-gdal TS', () => {
 
       it('should write data from an ndarray', () => {
         const original = src.bands.get(1).pixels.readArray({ width: src.rasterSize.x, height: src.rasterSize.y });
+
+        dst.bands.get(1).pixels.writeArray({ width: src.rasterSize.x, height: src.rasterSize.y, data: original });
+
+        const res = dst.bands.get(1).pixels.readArray({ width: src.rasterSize.x, height: src.rasterSize.y });
+        assert.deepEqual(original.data, res.data);
+      });
+
+      it('should write data from an @stdlib ndarray', () => {
+        const nd = stdarray(new Uint8Array(src.rasterSize.x * src.rasterSize.y), { shape: [ src.rasterSize.y, src.rasterSize.x ] });
+        const original = src.bands.get(1).pixels.readArray({ data: nd });
 
         dst.bands.get(1).pixels.writeArray({ width: src.rasterSize.x, height: src.rasterSize.y, data: original });
 
@@ -257,7 +291,7 @@ describe('ndarray-gdal TS', () => {
         assert.isFunction(gdal.RasterBandPixels.prototype.writeArrayAsync);
       });
 
-      it('should support async reading of ndarray', () => {
+      it('should support async writing from ndarray', () => {
         const src = gdal.open('test/sample.tif');
         const dst = gdal.open('temp', 'w', 'MEM', src.rasterSize.x, src.rasterSize.y, 1);
         const original = src.bands.get(1).pixels.readArray({ width: src.rasterSize.x, height: src.rasterSize.y });
@@ -266,6 +300,24 @@ describe('ndarray-gdal TS', () => {
           width: src.rasterSize.x,
           height: src.rasterSize.y,
           data: original });
+
+        return assert.isFulfilled(q.then(() => {
+          const res = dst.bands.get(1).pixels.readArray({ width: src.rasterSize.x, height: src.rasterSize.y });
+          assert.deepEqual(original.data, res.data);
+        }));
+      });
+
+      it('should support async writing from @stdlib ndarray', () => {
+        const src = gdal.open('test/sample.tif');
+        const dst = gdal.open('temp', 'w', 'MEM', src.rasterSize.x, src.rasterSize.y, 1);
+        const original = stdarray(new Uint8Array(src.rasterSize.x * src.rasterSize.y), { shape: [ src.rasterSize.y, src.rasterSize.x ] });
+        src.bands.get(1).pixels.readArray({ data: original });
+
+        const q = dst.bands.get(1).pixels.writeArrayAsync({
+          width: src.rasterSize.x,
+          height: src.rasterSize.y,
+          data: original
+        });
 
         return assert.isFulfilled(q.then(() => {
           const res = dst.bands.get(1).pixels.readArray({ width: src.rasterSize.x, height: src.rasterSize.y });
@@ -323,6 +375,16 @@ describe('ndarray-gdal TS', () => {
         assert.deepEqual(nd.shape, original.shape);
         assert.deepEqual(nd.stride, original.stride);
         assert.isTrue(ops.equals(nd, original));
+      });
+
+      it('should write to a preallocated @stdlib array', () => {
+        const nd = stdarray(new Float32Array(array.length), { shape: array.dimensions.map((dim) => dim.size) });
+
+        array.readArray({ data: nd });
+
+        assert.deepEqual(nd.shape, original.shape);
+        assert.deepEqual(nd.strides, original.stride);
+        assert.deepEqual(nd.data, original.data);
       });
 
       it('should guess the size with no arguments', () => {
@@ -405,6 +467,16 @@ describe('ndarray-gdal TS', () => {
         const original = array.readArray();
         const ndq = array.readArrayAsync();
         return assert.isFulfilled(ndq.then((nd) => assert.isTrue(ops.equals(original, nd))));
+      });
+
+      it('should support async reading of @stdlib ndarray', () => {
+        const ds = gdal.open(path.resolve(__dirname, 'gfs.t00z.alnsf.nc'), 'mr');
+        const array = ds.root.arrays.get('alnsf');
+        const original = stdarray(new Float32Array(array.length), { shape: array.dimensions.map((dim) => dim.size) });
+        const nd = stdarray(new Float32Array(array.length), { shape: array.dimensions.map((dim) => dim.size) });
+        array.readArray({ data: original });
+        const ndq = array.readArrayAsync({ data: nd });
+        return assert.isFulfilled(ndq.then((nd) => assert.deepEqual(original.data, nd.data)));
       });
 
       it('should return a rejected Promise when data is not an ndarray', () =>

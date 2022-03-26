@@ -29,11 +29,13 @@
   },
   "homepage": "https://github.com/mmomtchev/ndarray-gdal#readme",
   "peerDependencies": {
+    "@stdlib/types": "^0.0.14",
     "@types/ndarray": "^1.0.9",
     "gdal-async": ">=3.3.0",
     "ndarray": "^1.0.19"
   },
   "devDependencies": {
+    "@stdlib/ndarray": "^0.0.13",
     "@types/chai": "^4.2.18",
     "@types/chai-as-promised": "^7.1.4",
     "@types/mocha": "^8.2.2",
