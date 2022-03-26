@@ -2,6 +2,6 @@ module.exports = {
   include: [ 'ndarray-gdal.js' ],
   output: 'index.d.ts',
   filter: (name) => !name.match(/options\./g),
-  header: 'import ndarray from \'ndarray\'',
+  header: 'import ndarray from \'ndarray\'\nimport * as gdal from \'gdal-async\'',
   augmentation: 'gdal-async'
 };

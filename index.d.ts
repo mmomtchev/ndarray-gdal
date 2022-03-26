@@ -1,10 +1,23 @@
 import ndarray from 'ndarray'
+import * as gdal from 'gdal-async'
 
 declare module 'gdal-async' {
 
-export type ArrayOptions = { data?: ndarray.NdArray<any>, x?: number, y?: number,  width?: number, height?: number, resampling?: string, progress_cb?: ProgressCb  }
+export type ArrayOptions = {
+	data?: ndarray.NdArray<TypedArray>;
+	x?: number;
+	y?: number;
+	width?: number;
+	height?: number;
+	resampling?: string;
+	progress_cb?: ProgressCb;
+}
 
-export type NDArrayOptions = { data?: ndarray.NdArray, origin?: number[], span?: number[] }
+export type NDArrayOptions = {
+	data?: ndarray.NdArray<TypedArray>;
+	origin?: number[];
+	span?: number[];
+}
 
 export interface MDArray {
 /**
@@ -25,13 +38,13 @@ export interface MDArray {
  *
  * @method readArray
  * @param {NDArrayOptions} [options]
- * @param {ndarray.NdArray} [options.data] Existing ndarray to use
+ * @param {ndarray.NdArray<TypedArray>} [options.data] Existing ndarray to use
  * @param {number[]} [options.origin] [0, ...] if not specified
  * @param {number[]} [options.span] Full size if not specified
  * @throws {Error}
- * @returns {ndarray.NdArray}
+ * @returns {ndarray.NdArray<TypedArray>}
  */
-  readArray(options?: NDArrayOptions): ndarray.NdArray
+  readArray(options?: NDArrayOptions): ndarray.NdArray<TypedArray>
 
   /**
  * Read the selection region into the given ndarray or a new ndarray, async version.
@@ -44,13 +57,13 @@ export interface MDArray {
  *
  * @method readArrayAsync
  * @param {NDArrayOptions} [options]
- * @param {ndarray.NdArray} [options.data] Existing ndarray to use
+ * @param {ndarray.NdArray<TypedArray>} [options.data] Existing ndarray to use
  * @param {number[]} [options.origin] [0, ...] if not specified
  * @param {number[]} [options.span] Full size if not specified
 
- * @returns {Promise<ndarray.NdArray>}
+ * @returns {Promise<ndarray.NdArray<TypedArray>>}
  */
-  readArrayAsync(options?: NDArrayOptions): Promise<ndarray.NdArray>
+  readArrayAsync(options?: NDArrayOptions): Promise<ndarray.NdArray<TypedArray>>
 }
 
 export interface RasterBandPixels {
@@ -74,7 +87,7 @@ export interface RasterBandPixels {
  *
  * @method readArray
  * @param {ArrayOptions} [options]
- * @param {ndarray.NdArray<any>} [options.data]
+ * @param {ndarray.NdArray<TypedArray>} [options.data]
  * @param {number} [options.x]
  * @param {number} [options.y]
  * @param {number} [options.width]
@@ -82,9 +95,9 @@ export interface RasterBandPixels {
  * @param {string} [options.resampling]
  * @param {ProgressCb} [options.progress_cb]
  * @throws {Error}
- * @returns {ndarray.NdArray<any>}
+ * @returns {ndarray.NdArray<TypedArray>}
  */
-  readArray(options?: ArrayOptions): ndarray.NdArray<any>
+  readArray(options?: ArrayOptions): ndarray.NdArray<TypedArray>
 
   /**
  * Read the selection region into the given ndarray or a new ndarray, async version.
@@ -99,16 +112,16 @@ export interface RasterBandPixels {
  *
  * @method readArrayAsync
  * @param {ArrayOptions} [options]
- * @param {ndarray.NdArray<any>} [options.data]
+ * @param {ndarray.NdArray<TypedArray>} [options.data]
  * @param {number} [options.x]
  * @param {number} [options.y]
  * @param {number} [options.width]
  * @param {number} [options.height]
  * @param {string} [options.resampling]
  * @param {ProgressCb} [options.progress_cb]
- * @returns {Promise<ndarray.NdArray<any>>}
+ * @returns {Promise<ndarray.NdArray<TypedArray>>}
  */
-  readArrayAsync(options?: ArrayOptions): Promise<ndarray.NdArray<any>>
+  readArrayAsync(options?: ArrayOptions): Promise<ndarray.NdArray<TypedArray>>
 
   /**
  * Write the selection region from the given ndarray.
@@ -119,7 +132,7 @@ export interface RasterBandPixels {
  *
  * @method writeArray
  * @param {ArrayOptions} options
- * @param {ndarray.NdArray<any>} options.data
+ * @param {ndarray.NdArray<TypedArray>} options.data
  * @param {number} [options.x]
  * @param {number} [options.y]
  * @param {number} [options.width]
@@ -139,7 +152,7 @@ export interface RasterBandPixels {
  *
  * @method writeArrayAsync
  * @param {ArrayOptions} options
- * @param {ndarray.NdArray<any>} options.data
+ * @param {ndarray.NdArray<TypedArray>} options.data
  * @param {number} [options.x]
  * @param {number} [options.y]
  * @param {number} [options.width]

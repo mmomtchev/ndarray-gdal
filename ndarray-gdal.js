@@ -29,7 +29,7 @@ fromGDALDataType[gdal.GDT_Float64] = Float64Array;
 
 /**
  * @typedef ArrayOptions
- * @property {ndarray.NdArray<any>} [data]
+ * @property {ndarray.NdArray<TypedArray>} [data]
  * @property {number} [x]
  * @property {number} [y]
  * @property {number} [width]
@@ -59,7 +59,7 @@ fromGDALDataType[gdal.GDT_Float64] = Float64Array;
  *
  * @method readArray
  * @param {ArrayOptions} [options]
- * @param {ndarray.NdArray<any>} [options.data]
+ * @param {ndarray.NdArray<TypedArray>} [options.data]
  * @param {number} [options.x]
  * @param {number} [options.y]
  * @param {number} [options.width]
@@ -67,7 +67,7 @@ fromGDALDataType[gdal.GDT_Float64] = Float64Array;
  * @param {string} [options.resampling]
  * @param {ProgressCb} [options.progress_cb]
  * @throws {Error}
- * @returns {ndarray.NdArray<any>}
+ * @returns {ndarray.NdArray<TypedArray>}
  */
 
 /**
@@ -83,14 +83,14 @@ fromGDALDataType[gdal.GDT_Float64] = Float64Array;
  *
  * @method readArrayAsync
  * @param {ArrayOptions} [options]
- * @param {ndarray.NdArray<any>} [options.data]
+ * @param {ndarray.NdArray<TypedArray>} [options.data]
  * @param {number} [options.x]
  * @param {number} [options.y]
  * @param {number} [options.width]
  * @param {number} [options.height]
  * @param {string} [options.resampling]
  * @param {ProgressCb} [options.progress_cb]
- * @returns {Promise<ndarray.NdArray<any>>}
+ * @returns {Promise<ndarray.NdArray<TypedArray>>}
  */
 
 const makeBandReadArray = (fn) => function readArray(opts) {
@@ -146,7 +146,7 @@ const makeBandReadArray = (fn) => function readArray(opts) {
  *
  * @method writeArray
  * @param {ArrayOptions} options
- * @param {ndarray.NdArray<any>} options.data
+ * @param {ndarray.NdArray<TypedArray>} options.data
  * @param {number} [options.x]
  * @param {number} [options.y]
  * @param {number} [options.width]
@@ -165,7 +165,7 @@ const makeBandReadArray = (fn) => function readArray(opts) {
  *
  * @method writeArrayAsync
  * @param {ArrayOptions} options
- * @param {ndarray.NdArray<any>} options.data
+ * @param {ndarray.NdArray<TypedArray>} options.data
  * @param {number} [options.x]
  * @param {number} [options.y]
  * @param {number} [options.width]
@@ -211,7 +211,7 @@ const makeBandWriteArray = (fn) => function writeArray(opts) {
 
 /**
  * @typedef NDArrayOptions
- * @property {ndarray.NdArray} [data]
+ * @property {ndarray.NdArray<TypedArray>} [data]
  * @property {number[]} [origin]
  * @property {number[]} [span]
  */
@@ -235,11 +235,11 @@ const makeBandWriteArray = (fn) => function writeArray(opts) {
  *
  * @method readArray
  * @param {NDArrayOptions} [options]
- * @param {ndarray.NdArray} [options.data] Existing ndarray to use
+ * @param {ndarray.NdArray<TypedArray>} [options.data] Existing ndarray to use
  * @param {number[]} [options.origin] [0, ...] if not specified
  * @param {number[]} [options.span] Full size if not specified
  * @throws {Error}
- * @returns {ndarray.NdArray}
+ * @returns {ndarray.NdArray<TypedArray>}
  */
 function MDArrayReadArray(opts) {
   let { data, origin, span } = opts || {};
@@ -288,11 +288,11 @@ function MDArrayReadArray(opts) {
  *
  * @method readArrayAsync
  * @param {NDArrayOptions} [options]
- * @param {ndarray.NdArray} [options.data] Existing ndarray to use
+ * @param {ndarray.NdArray<TypedArray>} [options.data] Existing ndarray to use
  * @param {number[]} [options.origin] [0, ...] if not specified
  * @param {number[]} [options.span] Full size if not specified
 
- * @returns {Promise<ndarray.NdArray>}
+ * @returns {Promise<ndarray.NdArray<TypedArray>>}
  */
 async function MDArrayReadArrayAsync(opts) {
   let { data, origin, span } = opts || {};

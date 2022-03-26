@@ -145,7 +145,7 @@ describe('ndarray-gdal TS', () => {
         assert.throws(() => band.pixels.readArray({ data: ndarray(new Uint8Array(1), [ 1 ]) }), /2 dimensions/);
       });
       it('should throw when the datatype is not supported', () => {
-        assert.throws(() => band.pixels.readArray({ data: ndarray(new Int8Array(4), [ 2, 2 ]) }), /Type.*not supported/);
+        assert.throws(() => band.pixels.readArray({ data: ndarray(new Int8Array(4) as unknown as Uint8Array, [ 2, 2 ]) }), /Type.*not supported/);
       });
     });
 
@@ -390,7 +390,7 @@ describe('ndarray-gdal TS', () => {
         assert.throws(() => array.readArray({ data: ndarray(new Uint8Array(1), [ 1, 1 ]) }), /3 dimensions/);
       });
       it('should throw when the datatype is not supported', () => {
-        assert.throws(() => array.readArray({ data: ndarray(new Int8Array(8), [ 2, 2, 2 ]) }), /Type.*not supported/);
+        assert.throws(() => array.readArray({ data: ndarray(new Int8Array(8) as unknown as Uint8Array, [ 2, 2, 2 ]) }), /Type.*not supported/);
       });
     });
 
@@ -420,7 +420,7 @@ describe('ndarray-gdal TS', () => {
       );
       it('should return a rejected Promise when the datatype is not supported by GDAL', () =>
         assert.isRejected(gdal.open(path.resolve(__dirname, 'gfs.t00z.alnsf.nc'), 'mr').root.arrays.get('alnsf').readArrayAsync({
-          data: ndarray(new Int8Array(1), [ 1, 1, 1 ]) }),
+          data: ndarray(new Int8Array(1) as unknown as Uint8Array, [ 1, 1, 1 ]) }),
         /Type.*not supported/)
       );
     });
