@@ -5,7 +5,7 @@
   "main": "ndarray-gdal.js",
   "types": "index.d.ts",
   "scripts": {
-    "test": "mocha",
+    "test": "mocha && tsc -noEmit -esModuleInterop test/test-import.ts",
     "build": "npx yatag",
     "c8": "npx c8 node node_modules/.bin/mocha --require ts-node/register -R tap test/*.test.?s",
     "lcov": "npx c8 report --reporter=text-lcov > coverage/tests.lcov",
@@ -50,7 +50,7 @@
     "eslint-plugin-array-func": "^3.1.7",
     "eslint-plugin-mocha": "^9.0.0",
     "eslint-plugin-prefer-arrow": "^1.2.3",
-    "gdal-async": ">=3.3.0",
+    "gdal-async": "^3.5.2",
     "mocha": "^8.4.0",
     "ndarray": "^1.0.19",
     "ndarray-ops": "^1.2.2",
