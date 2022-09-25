@@ -75,7 +75,7 @@ Multidimensional arrays are currently read-only.
 TypeScript is supported via a module augmentation definition file.
 
 ```sh
-npm install --save @types/ndarray
+npm install --save-dev @types/ndarray @stdlib/types
 ```
 
 ```ts
