@@ -50,7 +50,7 @@
     "eslint-plugin-array-func": "^3.1.7",
     "eslint-plugin-mocha": "^9.0.0",
     "eslint-plugin-prefer-arrow": "^1.2.3",
-    "gdal-async": "^3.7.1",
+    "gdal-async": "^3.7.2-1",
     "mocha": "^10.1.0",
     "ndarray": "^1.0.19",
     "ndarray-ops": "^1.2.2",
