@@ -6,8 +6,8 @@ import * as gdal from 'gdal-async';
 
 declare module 'gdal-async' {
 
-export type ArrayOptions = {
-	data?: ndarray.NdArray<TypedArray>|stdlib.ndarray;
+export type ArrayOptions<T extends TypedArray = TypedArray> = {
+	data?: ndarray.NdArray<T>|stdlib.ndarray;
 	x?: number;
 	y?: number;
 	width?: number;
@@ -16,8 +16,8 @@ export type ArrayOptions = {
 	progress_cb?: ProgressCb;
 }
 
-export type NDArrayOptions = {
-	data?: ndarray.NdArray<TypedArray>|stdlib.ndarray;
+export type NDArrayOptions<T extends TypedArray = TypedArray> = {
+	data?: ndarray.NdArray<T>|stdlib.ndarray;
 	origin?: number[];
 	span?: number[];
 }
@@ -47,7 +47,7 @@ export interface MDArray {
  * @throws {Error}
  * @returns {ndarray.NdArray<TypedArray>}
  */
-  readArray(options?: NDArrayOptions): ndarray.NdArray<TypedArray>
+  readArray<T extends TypedArray = TypedArray>(options?: NDArrayOptions): ndarray.NdArray<T>
 
   /**
  * Read the selection region into the given ndarray or a new ndarray, async version.
@@ -65,7 +65,7 @@ export interface MDArray {
  * @param {number[]} [options.span] Full size if not specified
  * @returns {Promise<ndarray.NdArray<TypedArray>>}
  */
-  readArrayAsync(options?: NDArrayOptions): Promise<ndarray.NdArray<TypedArray>>
+  readArrayAsync<T extends TypedArray = TypedArray>(options?: NDArrayOptions): Promise<ndarray.NdArray<T>>
 }
 
 export interface RasterBandPixels {
@@ -89,7 +89,7 @@ export interface RasterBandPixels {
  *
  * @method readArray
  * @param {ArrayOptions} [options]
- * @param {ndarray.NdArray<TypedArray>} [options.data]
+ * @param {ndarray.NdArray<T extends TypedArray = TypedArray>} [options.data]
  * @param {number} [options.x]
  * @param {number} [options.y]
  * @param {number} [options.width]
@@ -99,7 +99,7 @@ export interface RasterBandPixels {
  * @throws {Error}
  * @returns {ndarray.NdArray<TypedArray>}
  */
-  readArray(options?: ArrayOptions): ndarray.NdArray<TypedArray>
+  readArray<T extends TypedArray = TypedArray>(options?: ArrayOptions<T>): ndarray.NdArray<T>
 
   /**
  * Read the selection region into the given ndarray or a new ndarray, async version.
@@ -114,7 +114,7 @@ export interface RasterBandPixels {
  *
  * @method readArrayAsync
  * @param {ArrayOptions} [options]
- * @param {ndarray.NdArray<TypedArray>} [options.data]
+ * @param {ndarray.NdArray<T extends TypedArray = TypedArray>} [options.data]
  * @param {number} [options.x]
  * @param {number} [options.y]
  * @param {number} [options.width]
@@ -123,7 +123,7 @@ export interface RasterBandPixels {
  * @param {ProgressCb} [options.progress_cb]
  * @returns {Promise<ndarray.NdArray<TypedArray>>}
  */
-  readArrayAsync(options?: ArrayOptions): Promise<ndarray.NdArray<TypedArray>>
+  readArrayAsync<T extends TypedArray = TypedArray>(options?: ArrayOptions<T>): Promise<ndarray.NdArray<T>>
 
   /**
  * Write the selection region from the given ndarray.
