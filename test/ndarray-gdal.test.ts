@@ -337,7 +337,7 @@ describe('ndarray-gdal TS', () => {
 
   describe('gdal.MDArray', () => {
     describe('readArray', () => {
-      let original: ndarray.NdArray;
+      let original: ndarray.NdArray<Float32Array>;
       let ds: gdal.Dataset, array: gdal.MDArray;
 
       before(() => {
