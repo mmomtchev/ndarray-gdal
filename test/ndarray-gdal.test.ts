@@ -6,7 +6,7 @@ import { array as stdarray } from '@stdlib/ndarray';
 import * as chai from 'chai';
 import * as path from 'path';
 import chaiAsPromised from 'chai-as-promised';
-const assert = chai.assert;
+const assert: Chai.Assert = chai.assert;
 chai.use(chaiAsPromised);
 
 import '..';
