@@ -43,7 +43,7 @@ jobs:
     - run: npm install
     - run: npm run c8
     - run: npm run lcov
-    - uses: codecov/codecov-action@v3
+    - uses: codecov/codecov-action@v4
       with:
         fail_ci_if_error: true
         directory: ${{ github.workspace }}/coverage
