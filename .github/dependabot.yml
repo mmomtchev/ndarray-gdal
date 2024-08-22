@@ -9,6 +9,9 @@ updates:
       eslint:
         patterns:
         - "*eslint*"
+      stdlib:
+        patterns:
+        - "*stdlib*"
   - package-ecosystem: "github-actions"
     directory: "/"
     schedule:
