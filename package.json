@@ -54,7 +54,7 @@
     "@stdlib/string": "^0.3.1",
     "@stdlib/symbol": "^0.3.1",
     "@types/chai": "^4.2.18",
-    "@types/chai-as-promised": "^7.1.4",
+    "@types/chai-as-promised": "^8.0.0",
     "@types/mocha": "^10.0.6",
     "@types/ndarray": "^1.0.10",
     "@types/ndarray-ops": "^1.2.1",
