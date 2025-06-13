@@ -30,7 +30,7 @@ fromGDALDataType[gdal.GDT_Float64] = Float64Array;
 const stride = (obj) => obj.stride || obj.strides;
 
 /**
- * @typedef ArrayOptions<T extends TypedArray = TypedArray>
+ * @typedef ArrayOptions<T extends ndarray.TypedArray = ndarray.TypedArray>
  * @property {ndarray.NdArray<T>|stdlib.ndarray} [data]
  * @property {number} [x]
  * @property {number} [y]
@@ -59,7 +59,7 @@ const stride = (obj) => obj.stride || obj.strides;
  * If no array is specified, a new scijs/ndarray of [width, height] size with a default
  * positive/positive row-major stride will be allocated.
  *
- * @method readArray<T extends TypedArray = TypedArray>
+ * @method readArray<T extends ndarray.TypedArray = ndarray.TypedArray>
  * @param {ArrayOptions<T>} [options]
  * @param {ndarray.NdArray<T>} [options.data]
  * @param {number} [options.x]
@@ -74,7 +74,7 @@ const stride = (obj) => obj.stride || obj.strides;
 
 /**
  * @method readArray
- * @param {ArrayOptions<TypedArray>} [options]
+ * @param {ArrayOptions<ndarray.TypedArray>} [options]
  * @param {stdlib.ndarray} [options.data]
  * @param {number} [options.x]
  * @param {number} [options.y]
@@ -97,7 +97,7 @@ const stride = (obj) => obj.stride || obj.strides;
  * If no array is specified, a new scijs/ndarray of [width, height] size with a default
  * positive/positive row-major stride will be allocated.
  *
- * @method readArrayAsync<T extends TypedArray = TypedArray>
+ * @method readArrayAsync<T extends ndarray.TypedArray = ndarray.TypedArray>
  * @param {ArrayOptions<T>} [options]
  * @param {ndarray.NdArray<T>} [options.data]
  * @param {number} [options.x]
@@ -111,7 +111,7 @@ const stride = (obj) => obj.stride || obj.strides;
 
 /**
  * @method readArrayAsync
- * @param {ArrayOptions<TypedArray>} [options]
+ * @param {ArrayOptions<ndarray.TypedArray>} [options]
  * @param {stdlib.ndarray} [options.data]
  * @param {number} [options.x]
  * @param {number} [options.y]
@@ -239,7 +239,7 @@ const makeBandWriteArray = (fn) => function writeArray(opts) {
 };
 
 /**
- * @typedef NDArrayOptions<T extends TypedArray = TypedArray>
+ * @typedef NDArrayOptions<T extends ndarray.TypedArray = ndarray.TypedArray>
  * @property {ndarray.NdArray<T>|stdlib.ndarray} [data]
  * @property {number[]} [origin]
  * @property {number[]} [span]
@@ -262,7 +262,7 @@ const makeBandWriteArray = (fn) => function writeArray(opts) {
  * If no array is specified, a new array of the full raster size with a default
  * positive/positive row-major stride will be allocated.
  *
- * @method readArray<T extends TypedArray = TypedArray>
+ * @method readArray<T extends ndarray.TypedArray = ndarray.TypedArray>
  * @param {NDArrayOptions<T>} [options]
  * @param {ndarray.NdArray<T>} [options.data] Existing ndarray to use
  * @param {number[]} [options.origin] [0, ...] if not specified
@@ -273,7 +273,7 @@ const makeBandWriteArray = (fn) => function writeArray(opts) {
 
 /**
  * @method readArray
- * @param {NDArrayOptions<TypedArray>} [options]
+ * @param {NDArrayOptions<ndarray.TypedArray>} [options]
  * @param {stdlib.ndarray} [options.data] Existing ndarray to use
  * @param {number[]} [options.origin] [0, ...] if not specified
  * @param {number[]} [options.span] Full size if not specified
@@ -325,7 +325,7 @@ function MDArrayReadArray(opts) {
  * If no array is specified, a new array of the full raster size with a default
  * positive/positive row-major stride will be allocated.
  *
- * @method readArrayAsync<T extends TypedArray = TypedArray>
+ * @method readArrayAsync<T extends ndarray.TypedArray = ndarray.TypedArray>
  * @param {NDArrayOptions<T>} [options]
  * @param {ndarray.NdArray<T>} [options.data] Existing ndarray to use
  * @param {number[]} [options.origin] [0, ...] if not specified

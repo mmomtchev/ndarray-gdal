@@ -14,13 +14,14 @@ import '..';
 describe('ndarray-gdal TS', () => {
   describe('gdal.RasterBand', () => {
     describe('readArray', () => {
-      let original: gdal.TypedArray;
+      let original: ndarray.TypedArray;
+      let g: gdal.TypedArray;
       let ds: gdal.Dataset, band: gdal.RasterBand;
 
       before(() => {
         const ds = gdal.open('test/sample.tif');
         const band = ds.bands.get(1);
-        original = band.pixels.read(0, 0, ds.rasterSize.x, ds.rasterSize.y);
+        original = band.pixels.read<Uint8Array>(0, 0, ds.rasterSize.x, ds.rasterSize.y);
       });
 
       beforeEach(() => {
@@ -38,7 +39,7 @@ describe('ndarray-gdal TS', () => {
 
       it('should create a new array when needed', () => {
 
-        const nd = band.pixels.readArray({ width: ds.rasterSize.x, height: ds.rasterSize.y });
+        const nd = band.pixels.readArray<Uint8Array>({ width: ds.rasterSize.x, height: ds.rasterSize.y });
 
         assert.equal(nd.shape[0], ds.rasterSize.y);
         assert.equal(nd.shape[1], ds.rasterSize.x);
@@ -72,7 +73,7 @@ describe('ndarray-gdal TS', () => {
       });
 
       it('should guess the size with no arguments', () => {
-        const nd = band.pixels.readArray();
+        const nd = band.pixels.readArray<Uint8Array>();
 
         assert.equal(nd.shape[0], ds.rasterSize.y);
         assert.equal(nd.shape[1], ds.rasterSize.x);
@@ -91,7 +92,8 @@ describe('ndarray-gdal TS', () => {
         assert.equal(nd.shape[1], ds.rasterSize.x);
         assert.equal(nd.stride[0], 1);
         assert.equal(nd.stride[1], ds.rasterSize.y);
-        assert.isTrue(ops.equals(nd, ndarray(original, [ ds.rasterSize.y, ds.rasterSize.x ])));
+        const orig = ndarray(original, [ ds.rasterSize.y, ds.rasterSize.x ]);
+        assert.isTrue(ops.equals(nd, orig));
       });
 
       it('should support row-negative stride', () => {
@@ -172,7 +174,7 @@ describe('ndarray-gdal TS', () => {
       it('should support async reading of ndarray', () => {
         const ds = gdal.open('test/sample.tif');
         const band = ds.bands.get(1);
-        const original = band.pixels.read(0, 0, ds.rasterSize.x, ds.rasterSize.y);
+        const original = band.pixels.read<Uint8Array>(0, 0, ds.rasterSize.x, ds.rasterSize.y);
         const ndq = band.pixels.readArrayAsync();
         return assert.isFulfilled(ndq.then((nd) => assert.deepEqual(original, nd.data)));
       });
@@ -182,7 +184,7 @@ describe('ndarray-gdal TS', () => {
         const band = ds.bands.get(1);
         const nd = stdarray(new Uint8Array(ds.rasterSize.x * ds.rasterSize.y), { shape: [ ds.rasterSize.y, ds.rasterSize.x ] });
         const original = band.pixels.read(0, 0, ds.rasterSize.x, ds.rasterSize.y);
-        const ndq = band.pixels.readArrayAsync({ data: nd });
+        const ndq = band.pixels.readArrayAsync<Uint8Array>({ data: nd });
         return assert.isFulfilled(ndq.then((nd) => assert.deepEqual(original, nd.data)));
       });
 
@@ -360,7 +362,7 @@ describe('ndarray-gdal TS', () => {
       });
 
       it('should create a new array when needed', () => {
-        const nd = array.readArray({ span: array.dimensions.map((dim) => dim.size) });
+        const nd = array.readArray<Uint8Array>({ span: array.dimensions.map((dim) => dim.size) });
 
         assert.deepEqual(nd.shape, original.shape);
         assert.deepEqual(nd.stride, original.stride);
@@ -388,7 +390,7 @@ describe('ndarray-gdal TS', () => {
       });
 
       it('should guess the size with no arguments', () => {
-        const nd = array.readArray();
+        const nd = array.readArray<Uint8Array>();
 
         assert.deepEqual(nd.shape, original.shape);
         assert.deepEqual(nd.stride, original.stride);
@@ -438,7 +440,7 @@ describe('ndarray-gdal TS', () => {
       });
 
       it('should support partial reads', () => {
-        const nd = array.readArray({ span: [ 1, 10, 10 ] });
+        const nd = array.readArray<Uint8Array>({ span: [ 1, 10, 10 ] });
 
         assert.deepEqual(nd.shape, [ 1, 10, 10 ]);
         assert.isTrue(ops.equals(nd, original.hi(1, 10, 10)));
@@ -464,8 +466,8 @@ describe('ndarray-gdal TS', () => {
       it('should support async reading of ndarray', () => {
         const ds = gdal.open(path.resolve(__dirname, 'gfs.t00z.alnsf.nc'), 'mr');
         const array = ds.root.arrays.get('alnsf');
-        const original = array.readArray();
-        const ndq = array.readArrayAsync();
+        const original = array.readArray<Float32Array>();
+        const ndq = array.readArrayAsync<Float32Array>();
         return assert.isFulfilled(ndq.then((nd) => assert.isTrue(ops.equals(original, nd))));
       });
 
