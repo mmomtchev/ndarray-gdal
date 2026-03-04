@@ -15,7 +15,6 @@ describe('ndarray-gdal TS', () => {
   describe('gdal.RasterBand', () => {
     describe('readArray', () => {
       let original: ndarray.TypedArray;
-      let g: gdal.TypedArray;
       let ds: gdal.Dataset, band: gdal.RasterBand;
 
       before(() => {
