@@ -7,6 +7,7 @@
   "scripts": {
     "test": "mocha && tsc -noEmit -esModuleInterop test/test-import.ts",
     "build": "npx yatag",
+    "lint": "npx eslint",
     "c8": "npx c8 node node_modules/.bin/mocha --require ts-node/register -R tap test/*.test.?s",
     "lcov": "npx c8 report --reporter=text-lcov > coverage/tests.lcov",
     "codecov": "curl -s https://codecov.io/bash | bash"
@@ -35,6 +36,8 @@
     "ndarray": "^1.0.19"
   },
   "devDependencies": {
+    "@eslint/eslintrc": "^3.3.4",
+    "@eslint/js": "^10.0.1",
     "@stdlib/array": "^0.3.1",
     "@stdlib/assert": "^0.3.1",
     "@stdlib/bigint": "^0.3.1",
@@ -59,15 +62,15 @@
     "@types/ndarray": "^1.0.10",
     "@types/ndarray-ops": "^1.2.1",
     "@types/node": "^25.0.0",
-    "@typescript-eslint/eslint-plugin": "^8.0.0",
+    "@typescript-eslint/eslint-plugin": "^8.56.1",
     "@typescript-eslint/parser": "^8.0.0",
     "chai": "^4.3.4",
     "chai-as-promised": "^7.1.1",
     "eslint": "^10.0.2",
     "eslint-plugin-array-func": "^5.0.1",
     "eslint-plugin-mocha": "^10.4.3",
-    "eslint-plugin-prefer-arrow": "^1.2.3",
     "gdal-async": "^3.7.2-1",
+    "globals": "^17.4.0",
     "mocha": "^11.0.1",
     "ndarray": "^1.0.19",
     "ndarray-ops": "^1.2.2",
