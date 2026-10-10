@@ -195,7 +195,7 @@ describe('ndarray-gdal TS', () => {
     });
 
     describe('writeArray', () => {
-      let src, dst;
+      let src: gdal.Dataset, dst: gdal.Dataset;
 
       beforeEach(() => {
         src = gdal.open('test/sample.tif');
@@ -265,6 +265,7 @@ describe('ndarray-gdal TS', () => {
 
       it('should throw when data is not an ndarray', () => {
         assert.throws(() => src.bands.get(1).pixels.writeArray({
+          // @ts-expect-error this is the test
           data: {} }),
         /data must be/);
       });
