@@ -69,7 +69,7 @@
     "eslint": "^10.0.2",
     "eslint-plugin-array-func": "^5.0.1",
     "eslint-plugin-mocha": "^10.4.3",
-    "gdal-async": "^3.7.2-1",
+    "gdal-async": "^3.13.0",
     "globals": "^17.4.0",
     "mocha": "^11.0.1",
     "ndarray": "^1.0.19",
